@@ -17,13 +17,23 @@ namespace Roda
             objetos2d[objetos2d.Length - 1] = objeto2d;
         }
 
-        public Objeto2D SelecionarObjeto2D(Vector2D ponto)
+        public Objeto2D ObterObjetoPeloPonto2D(Vector2D ponto)
         {
             for (int i = 0; i < objetos2d.Length; i++)
             {
+                Objeto2D obj = objetos2d[i];
 
+                float xMax = obj.pos.x + obj.vertices.Max(x => x.x);
+                float xMin = obj.pos.x + obj.vertices.Min(x => x.x);
+                float yMax = obj.pos.y + obj.vertices.Max(x => x.y);
+                float yMin = obj.pos.y + obj.vertices.Min(x => x.y);
+
+                if (ponto.x >= xMin && ponto.x <= xMax)
+                    if (ponto.y >= yMin && ponto.y <= yMax)
+                    {
+                        return objetos2d[i];
+                    }
             }
-
             return null;
         }
 
@@ -31,7 +41,7 @@ namespace Roda
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            for (int i = 0; i < objetos2d.Count; i++)
+            for (int i = 0; i < objetos2d.Length; i++)
             {
                 Objeto2D obj = objetos2d[i];
 
@@ -40,8 +50,11 @@ namespace Roda
                     Vertice2D v1 = obj.vertices[v - 1];
                     Vertice2D v2 = obj.vertices[v];
 
+                    Color cor = obj.cor;
+                    if (obj.selecionado) cor = Color.Blue;
+
                     g.DrawLine(
-                        new Pen(obj.cor), 
+                        new Pen(cor), 
                         new Point((int)(obj.pos.x + v1.x), (int)(obj.pos.y + v1.y)), 
                         new Point((int)(obj.pos.x + v2.x), (int)(obj.pos.y + v2.y)));
                 }

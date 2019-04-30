@@ -11,6 +11,12 @@ namespace Roda
     {
         public float x;
         public float y;
+
+        public Vector2D(float x, float y)
+        {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     public struct Vertice2D
@@ -18,6 +24,7 @@ namespace Roda
         public float x;
         public float y;
         public float rad;
+        public float new_rad;
         public float raio;
         public Color cor;
     }
@@ -29,6 +36,7 @@ namespace Roda
         public float raio = 0F;
         public float angulo = 0F;
         public Vertice2D[] vertices;
+        public bool selecionado = false;
 
         public void AddVertice(Vertice2D vetor)
         {
@@ -49,6 +57,7 @@ namespace Roda
         public void GerarQuadrado(float raio)
         {
             GerarObjetoRadial(raio, 4);
+            angulo = 45;
         }
 
         public void GerarPentagono(float raio)
@@ -58,8 +67,8 @@ namespace Roda
 
         public void GerarObjetoRadial(float raio, int lados)
         {
-            vertices = new Vertice2D[lados + 1];
             this.raio = raio;
+            vertices = new Vertice2D[lados + 1];
             float rad = (float)(Math.PI * 2 / lados);
             for (int i = 0; i < lados + 1; i += 1)
             {
@@ -73,13 +82,14 @@ namespace Roda
             }
         }
 
-        public void DefinirAngulo(float novoAngulo)
+        public void AtualizarObjeto()
         {
-            this.angulo = novoAngulo;
+            float rad_diff = vertices[0].raio - Angulo2Radiano(angulo);
+
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i].x = (float)Math.Sin(vertices[i].rad + Angulo2Radiano(novoAngulo)) * vertices[i].raio;
-                vertices[i].y = (float)Math.Cos(vertices[i].rad + Angulo2Radiano(novoAngulo)) * vertices[i].raio;
+                vertices[i].x = (float)Math.Sin(vertices[i].rad + rad_diff) * vertices[i].raio;
+                vertices[i].y = (float)Math.Cos(vertices[i].rad + rad_diff) * vertices[i].raio;
             }
         }
         private float Angulo2Radiano(float angulo)

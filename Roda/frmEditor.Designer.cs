@@ -39,15 +39,21 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtAngulo = new System.Windows.Forms.TextBox();
+            this.txtAngulo = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtNome = new System.Windows.Forms.TextBox();
             this.lblNome = new System.Windows.Forms.Label();
-            this.txtPosY = new System.Windows.Forms.TextBox();
-            this.txtPosX = new System.Windows.Forms.TextBox();
+            this.txtRaio = new System.Windows.Forms.NumericUpDown();
+            this.txtPosY = new System.Windows.Forms.NumericUpDown();
+            this.txtPosX = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.picDesign)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAngulo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRaio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPosY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPosX)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrRender
@@ -64,6 +70,7 @@
             this.btnTriangulo.TabIndex = 5;
             this.btnTriangulo.Text = "Triângulo";
             this.btnTriangulo.UseVisualStyleBackColor = true;
+            this.btnTriangulo.Click += new System.EventHandler(this.BtnTriangulo_Click);
             // 
             // btnPentagono
             // 
@@ -73,6 +80,7 @@
             this.btnPentagono.TabIndex = 4;
             this.btnPentagono.Text = "Pentágono";
             this.btnPentagono.UseVisualStyleBackColor = true;
+            this.btnPentagono.Click += new System.EventHandler(this.BtnPentagono_Click);
             // 
             // btnCirculo
             // 
@@ -82,6 +90,7 @@
             this.btnCirculo.TabIndex = 3;
             this.btnCirculo.Text = "Círculo";
             this.btnCirculo.UseVisualStyleBackColor = true;
+            this.btnCirculo.Click += new System.EventHandler(this.BtnCirculo_Click);
             // 
             // btnQuadrado
             // 
@@ -91,6 +100,7 @@
             this.btnQuadrado.TabIndex = 2;
             this.btnQuadrado.Text = "Quadrado";
             this.btnQuadrado.UseVisualStyleBackColor = true;
+            this.btnQuadrado.Click += new System.EventHandler(this.BtnQuadrado_Click);
             // 
             // picDesign
             // 
@@ -140,12 +150,14 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.txtPosX);
+            this.panel1.Controls.Add(this.txtPosY);
+            this.panel1.Controls.Add(this.txtRaio);
             this.panel1.Controls.Add(this.txtAngulo);
+            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.txtNome);
             this.panel1.Controls.Add(this.lblNome);
-            this.panel1.Controls.Add(this.txtPosY);
-            this.panel1.Controls.Add(this.txtPosX);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.btnQuadrado);
             this.panel1.Controls.Add(this.label1);
@@ -160,10 +172,20 @@
             // 
             // txtAngulo
             // 
-            this.txtAngulo.Location = new System.Drawing.Point(58, 167);
+            this.txtAngulo.Location = new System.Drawing.Point(58, 170);
             this.txtAngulo.Name = "txtAngulo";
             this.txtAngulo.Size = new System.Drawing.Size(59, 20);
-            this.txtAngulo.TabIndex = 13;
+            this.txtAngulo.TabIndex = 16;
+            this.txtAngulo.ValueChanged += new System.EventHandler(this.TxtAngulo_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(130, 170);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(32, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Raio:";
             // 
             // label4
             // 
@@ -180,6 +202,7 @@
             this.txtNome.Name = "txtNome";
             this.txtNome.Size = new System.Drawing.Size(172, 20);
             this.txtNome.TabIndex = 10;
+            this.txtNome.TextChanged += new System.EventHandler(this.TxtNome_TextChanged);
             // 
             // lblNome
             // 
@@ -190,19 +213,29 @@
             this.lblNome.TabIndex = 9;
             this.lblNome.Text = "Nome:";
             // 
+            // txtRaio
+            // 
+            this.txtRaio.Location = new System.Drawing.Point(171, 170);
+            this.txtRaio.Name = "txtRaio";
+            this.txtRaio.Size = new System.Drawing.Size(59, 20);
+            this.txtRaio.TabIndex = 17;
+            this.txtRaio.ValueChanged += new System.EventHandler(this.TxtRaio_ValueChanged);
+            // 
             // txtPosY
             // 
-            this.txtPosY.Location = new System.Drawing.Point(171, 136);
+            this.txtPosY.Location = new System.Drawing.Point(171, 137);
             this.txtPosY.Name = "txtPosY";
             this.txtPosY.Size = new System.Drawing.Size(59, 20);
-            this.txtPosY.TabIndex = 8;
+            this.txtPosY.TabIndex = 18;
+            this.txtPosY.ValueChanged += new System.EventHandler(this.TxtPosY_ValueChanged);
             // 
             // txtPosX
             // 
-            this.txtPosX.Location = new System.Drawing.Point(58, 136);
+            this.txtPosX.Location = new System.Drawing.Point(58, 137);
             this.txtPosX.Name = "txtPosX";
             this.txtPosX.Size = new System.Drawing.Size(59, 20);
-            this.txtPosX.TabIndex = 7;
+            this.txtPosX.TabIndex = 19;
+            this.txtPosX.ValueChanged += new System.EventHandler(this.TxtPosX_ValueChanged);
             // 
             // Form1
             // 
@@ -218,6 +251,10 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAngulo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRaio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPosY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPosX)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -234,12 +271,14 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox txtPosY;
-        private System.Windows.Forms.TextBox txtPosX;
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.TextBox txtNome;
-        private System.Windows.Forms.TextBox txtAngulo;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown txtAngulo;
+        private System.Windows.Forms.NumericUpDown txtRaio;
+        private System.Windows.Forms.NumericUpDown txtPosY;
+        private System.Windows.Forms.NumericUpDown txtPosX;
     }
 }
 
