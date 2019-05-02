@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Roda
+namespace Engine
 {
     public class Engine2D
     {
+        public Camera camera = new Camera(0, 0, 0, 0);
         public float gravidade = 1F;
         public int QuadrosPorSegundo { get; private set; }
         public bool Debug { get; set; }
@@ -73,11 +75,27 @@ namespace Roda
                     else
                         estilo = obj.estilo_atual;
 
-                    g.DrawLine(
-                        new Pen(estilo.cor, estilo.pen_width), 
-                        new Point((int)(obj.pos.x + v1.x), (int)(obj.pos.y + v1.y)), 
-                        new Point((int)(obj.pos.x + v2.x), (int)(obj.pos.y + v2.y)));
+                    // Desenha apenas objetos que estão visíveis na camera
 
+
+                    // Desenha as linhas entre as vértices
+                    g.DrawLine(
+                        new Pen(estilo.cor_borda, estilo.pen_width), 
+                        new Point((int)(-camera.pos.x + obj.pos.x + v1.x), (int)(-camera.pos.y + obj.pos.y + v1.y)), 
+                        new Point((int)(-camera.pos.x + obj.pos.x + v2.x), (int)(-camera.pos.y + obj.pos.y + v2.y)));
+
+                    // Pinta o interior do objeto 2d
+                    if (obj.estilo_atual.cor_interior != Color.Transparent)
+                    {
+                        GraphicsPath preenchimento = new GraphicsPath(FillMode.Alternate);
+                        preenchimento.AddLines(obj.vertices.ToList().Select(ponto => new Point(
+                            (int)(-camera.pos.x + obj.pos.x + ponto.x), 
+                            (int)(-camera.pos.y + obj.pos.y + ponto.y))).ToArray());
+                        g.FillPath(new SolidBrush(obj.estilo_atual.cor_interior), preenchimento);
+
+                    }
+                    
+                    // Exibe informações de depuração
                     if (this.Debug)
                     {
                         using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
@@ -102,6 +120,30 @@ namespace Roda
             }
 
             int tempoGato = Environment.TickCount - tick;
+        }
+
+        public bool ObjetoVisivelNaCamera(Objeto2D objeto2d)
+        {
+            if (objeto2d.vertices != null)
+            {
+                float xMax = objeto2d.vertices.Max(x => x.x);
+                float xMin = objeto2d.vertices.Min(x => x.x);
+                float yMax = objeto2d.vertices.Max(x => x.y);
+                float yMin = objeto2d.vertices.Min(x => x.y);
+
+                float xxMax = -camera.pos.x + objeto2d.pos.x + xMax;
+                float xxMin = -camera.pos.x + objeto2d.pos.x + xMin;
+                float yyMax = -camera.pos.y + objeto2d.pos.y + yMax;
+                float yyMin = -camera.pos.y + objeto2d.pos.y + yMin;
+
+                if (xxMax > camera.pos.x || xxMin > camera.pos.x)
+                    if (yyMax > camera.pos.y || yyMin > camera.pos.y)
+                    {
+                        return true;
+                    }
+            }
+
+            return false;
         }
     }
 }

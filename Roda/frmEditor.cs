@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Engine;
 
 namespace Roda
 {
@@ -25,17 +26,15 @@ namespace Roda
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            txtPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
-            txtPosY.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
+            txtPosX.Maximum = txtCamPosY.Maximum = txtCamPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
+            txtPosY.Minimum = txtCamPosY.Minimum = txtCamPosX.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
 
             BtnCirculo_Click(sender, e);
+            chkDebug.Checked = true;
+
+            engine2D.camera = new Camera(0, 0, picDesign.ClientRectangle.Width, picDesign.ClientRectangle.Height);
         }
 
         private void AtualizarControles(Objeto2D objeto2d)
@@ -61,6 +60,14 @@ namespace Roda
         private void TmrRender_Tick(object sender, EventArgs e)
         {
             Refresh();
+
+            if (obj_selecionado != null)
+            {
+                if (engine2D.ObjetoVisivelNaCamera(obj_selecionado))
+                    txtVisivel.Text = "True";
+                else
+                    txtVisivel.Text = "False";
+            }
         }
 
         private void PicDesign_Paint(object sender, PaintEventArgs e)
@@ -104,6 +111,12 @@ namespace Roda
             quadrado.nome = "Quadrado1";
             quadrado.pos = PosAleatorio();
             quadrado.GerarQuadrado(raio_padrao);
+
+            EstiloObjeto2D estilo = new EstiloObjeto2D("quadrado");
+            estilo.cor_borda = Color.DarkSlateBlue;
+            quadrado.colecaoEstilos.Add(estilo);
+            quadrado.DefinirEstilo(estilo);
+
             engine2D.AddObjeto(quadrado);
         }
 
@@ -113,6 +126,14 @@ namespace Roda
             circulo.nome = "Circulo1";
             circulo.pos = PosAleatorio();
             circulo.GerarCirculo(raio_padrao);
+
+            EstiloObjeto2D estilo = new EstiloObjeto2D("circulo");
+            estilo.cor_borda = Color.DarkRed;
+            estilo.cor_interior = Color.AliceBlue;
+
+            circulo.colecaoEstilos.Add(estilo);
+            circulo.DefinirEstilo(estilo);
+
             engine2D.AddObjeto(circulo);
         }
 
@@ -122,6 +143,13 @@ namespace Roda
             triangulo.nome = "Triangulo1";
             triangulo.pos = PosAleatorio();
             triangulo.GerarTriangulo(raio_padrao);
+
+            EstiloObjeto2D estilo = new EstiloObjeto2D("triangulo");
+            estilo.cor_borda = Color.Red;
+            estilo.cor_interior = Color.Yellow;
+            triangulo.colecaoEstilos.Add(estilo);
+            triangulo.DefinirEstilo(estilo);
+
             engine2D.AddObjeto(triangulo);
         }
 
@@ -131,6 +159,12 @@ namespace Roda
             pentagono.nome = "Pentagono1";
             pentagono.pos = PosAleatorio();
             pentagono.GerarPentagono(raio_padrao);
+
+            EstiloObjeto2D estilo = new EstiloObjeto2D("pentagono");
+            estilo.cor_borda = Color.DarkMagenta;
+            pentagono.colecaoEstilos.Add(estilo);
+            pentagono.DefinirEstilo(estilo);
+
             engine2D.AddObjeto(pentagono);
         }
 
@@ -210,6 +244,36 @@ namespace Roda
         private void ChkDebug_CheckedChanged(object sender, EventArgs e)
         {
             engine2D.Debug = chkDebug.Checked;
+        }
+
+        private void TxtCamPosX_ValueChanged(object sender, EventArgs e)
+        {
+            if (txtCamPosX.Focused)
+            {
+                float camPosX;
+                if (float.TryParse(txtCamPosX.Text, out camPosX))
+                {
+                    engine2D.camera.pos.x = camPosX;
+                }
+            }
+        }
+
+        private void TxtCamPosY_ValueChanged(object sender, EventArgs e)
+        {
+            if (txtCamPosY.Focused)
+            {
+                float camPosY;
+                if (float.TryParse(txtCamPosY.Text, out camPosY))
+                {
+                    engine2D.camera.pos.y = camPosY;
+                }
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            engine2D.camera.width = picDesign.ClientRectangle.Width;
+            engine2D.camera.heigth = picDesign.ClientRectangle.Height;
         }
     }
 }

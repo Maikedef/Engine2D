@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Roda
+namespace Engine
 {
     public struct Vector2D
     {
@@ -34,8 +34,14 @@ namespace Roda
     public class EstiloObjeto2D
     {
         public string nome = "default";
-        public Color cor = Color.Black;
+        public Color cor_borda = Color.Black;
+        public Color cor_interior = Color.Transparent;
         public float pen_width = 1F;
+
+        public EstiloObjeto2D(string nome)
+        {
+            this.nome = nome;
+        }
     }
 
     public class ColecaoEstiloObjeto2D : ICollection<EstiloObjeto2D>, IEnumerable, IList<EstiloObjeto2D>
@@ -107,6 +113,8 @@ namespace Roda
 
     public class Objeto2D
     {
+        public bool visivelTela;
+
         public string nome;
         public Vector2D pos;
         
@@ -123,19 +131,17 @@ namespace Roda
         public Objeto2D()
         {
             #region Estilo Padrão
-            EstiloObjeto2D padrao = new EstiloObjeto2D();
-            padrao.cor = Color.Black;
+            EstiloObjeto2D padrao = new EstiloObjeto2D("padrao");
+            padrao.cor_borda = Color.Black;
             padrao.pen_width = 1F;
-            padrao.nome = "padrao";
             colecaoEstilos.Add(padrao);
             estilo_atual = padrao;
             #endregion
 
             #region Estilo Seleção
-            EstiloObjeto2D selecao = new EstiloObjeto2D();
-            selecao.cor = Color.Blue;
+            EstiloObjeto2D selecao = new EstiloObjeto2D("selecao");
+            selecao.cor_borda = Color.Blue;
             selecao.pen_width = 2F;
-            selecao.nome = "selecao";
             colecaoEstilos.Add(selecao);
             estilo_selecao = selecao;
             #endregion
@@ -145,6 +151,16 @@ namespace Roda
         {
             Array.Resize(ref vertices, vertices.Length + 1);
             vertices[vertices.Length - 1] = vetor;
+        }
+
+        public void DefinirEstilo(EstiloObjeto2D estilo)
+        {
+            estilo_atual = estilo;
+        }
+
+        public void DefinirEstilo(string nome)
+        {
+            estilo_atual = colecaoEstilos[nome];
         }
 
         public void GerarCirculo(float raio, int quant = 20)
