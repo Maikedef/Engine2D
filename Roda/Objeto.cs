@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -28,15 +30,116 @@ namespace Roda
         public float raio;
         public Color cor;
     }
+
+    public class EstiloObjeto2D
+    {
+        public string nome = "default";
+        public Color cor = Color.Black;
+        public float pen_width = 1F;
+    }
+
+    public class ColecaoEstiloObjeto2D : ICollection<EstiloObjeto2D>, IEnumerable, IList<EstiloObjeto2D>
+    {
+        List<EstiloObjeto2D> estilos = new List<EstiloObjeto2D>();
+
+        public EstiloObjeto2D this[int indice] { get => ((IList<EstiloObjeto2D>)estilos)[indice]; set => ((IList<EstiloObjeto2D>)estilos)[indice] = value; }
+        public EstiloObjeto2D this[string nome] {
+            get => estilos.Where(x => x.nome == nome).First();
+            set {
+                var obj = estilos.Where(x => x.nome == nome).First();
+                obj = value;
+            } }
+
+        public int Count => ((ICollection<EstiloObjeto2D>)estilos).Count;
+
+        public bool IsReadOnly => ((ICollection<EstiloObjeto2D>)estilos).IsReadOnly;
+
+        public void Add(EstiloObjeto2D item)
+        {
+            ((ICollection<EstiloObjeto2D>)estilos).Add(item);
+        }
+
+        public void Clear()
+        {
+            ((ICollection<EstiloObjeto2D>)estilos).Clear();
+        }
+
+        public bool Contains(EstiloObjeto2D item)
+        {
+            return ((ICollection<EstiloObjeto2D>)estilos).Contains(item);
+        }
+
+        public void CopyTo(EstiloObjeto2D[] array, int arrayIndex)
+        {
+            ((ICollection<EstiloObjeto2D>)estilos).CopyTo(array, arrayIndex);
+        }
+
+        public IEnumerator<EstiloObjeto2D> GetEnumerator()
+        {
+            return ((ICollection<EstiloObjeto2D>)estilos).GetEnumerator();
+        }
+
+        public int IndexOf(EstiloObjeto2D item)
+        {
+            return ((IList<EstiloObjeto2D>)estilos).IndexOf(item);
+        }
+
+        public void Insert(int indice, EstiloObjeto2D item)
+        {
+            ((IList<EstiloObjeto2D>)estilos).Insert(indice, item);
+        }
+
+        public bool Remove(EstiloObjeto2D item)
+        {
+            return ((ICollection<EstiloObjeto2D>)estilos).Remove(item);
+        }
+
+        public void RemoveAt(int indice)
+        {
+            ((IList<EstiloObjeto2D>)estilos).RemoveAt(indice);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((ICollection<EstiloObjeto2D>)estilos).GetEnumerator();
+        }
+    }
+
     public class Objeto2D
     {
         public string nome;
         public Vector2D pos;
-        public Color cor = Color.Black;
-        public float raio = 0F;
-        public float angulo = 0F;
+        
+        public float raio;
+        public float angulo;
         public Vertice2D[] vertices;
-        public bool selecionado = false;
+        public bool selecionado;
+        public ColecaoEstiloObjeto2D colecaoEstilos = new ColecaoEstiloObjeto2D();
+        public EstiloObjeto2D estilo_atual;
+        public EstiloObjeto2D estilo_selecao;
+
+        public bool fisica;
+
+        public Objeto2D()
+        {
+            #region Estilo Padrão
+            EstiloObjeto2D padrao = new EstiloObjeto2D();
+            padrao.cor = Color.Black;
+            padrao.pen_width = 1F;
+            padrao.nome = "padrao";
+            colecaoEstilos.Add(padrao);
+            estilo_atual = padrao;
+            #endregion
+
+            #region Estilo Seleção
+            EstiloObjeto2D selecao = new EstiloObjeto2D();
+            selecao.cor = Color.Blue;
+            selecao.pen_width = 2F;
+            selecao.nome = "selecao";
+            colecaoEstilos.Add(selecao);
+            estilo_selecao = selecao;
+            #endregion
+        }
 
         public void AddVertice(Vertice2D vetor)
         {

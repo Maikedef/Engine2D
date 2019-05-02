@@ -39,27 +39,31 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtPosX = new System.Windows.Forms.NumericUpDown();
+            this.txtPosY = new System.Windows.Forms.NumericUpDown();
+            this.txtRaio = new System.Windows.Forms.NumericUpDown();
             this.txtAngulo = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtNome = new System.Windows.Forms.TextBox();
             this.lblNome = new System.Windows.Forms.Label();
-            this.txtRaio = new System.Windows.Forms.NumericUpDown();
-            this.txtPosY = new System.Windows.Forms.NumericUpDown();
-            this.txtPosX = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.chkDebug = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picDesign)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAngulo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtRaio)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPosY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPosX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPosY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRaio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAngulo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrRender
             // 
             this.tmrRender.Enabled = true;
-            this.tmrRender.Interval = 10;
+            this.tmrRender.Interval = 1;
             this.tmrRender.Tick += new System.EventHandler(this.TmrRender_Tick);
             // 
             // btnTriangulo
@@ -114,6 +118,7 @@
             this.picDesign.TabStop = false;
             this.picDesign.Paint += new System.Windows.Forms.PaintEventHandler(this.PicDesign_Paint);
             this.picDesign.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseDown);
+            this.picDesign.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseMove);
             // 
             // label1
             // 
@@ -150,6 +155,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkDebug);
+            this.panel1.Controls.Add(this.numericUpDown1);
+            this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.txtPosX);
             this.panel1.Controls.Add(this.txtPosY);
             this.panel1.Controls.Add(this.txtRaio);
@@ -169,6 +177,30 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(250, 444);
             this.panel1.TabIndex = 0;
+            // 
+            // txtPosX
+            // 
+            this.txtPosX.Location = new System.Drawing.Point(58, 137);
+            this.txtPosX.Name = "txtPosX";
+            this.txtPosX.Size = new System.Drawing.Size(59, 20);
+            this.txtPosX.TabIndex = 19;
+            this.txtPosX.ValueChanged += new System.EventHandler(this.TxtPosX_ValueChanged);
+            // 
+            // txtPosY
+            // 
+            this.txtPosY.Location = new System.Drawing.Point(171, 137);
+            this.txtPosY.Name = "txtPosY";
+            this.txtPosY.Size = new System.Drawing.Size(59, 20);
+            this.txtPosY.TabIndex = 18;
+            this.txtPosY.ValueChanged += new System.EventHandler(this.TxtPosY_ValueChanged);
+            // 
+            // txtRaio
+            // 
+            this.txtRaio.Location = new System.Drawing.Point(171, 170);
+            this.txtRaio.Name = "txtRaio";
+            this.txtRaio.Size = new System.Drawing.Size(59, 20);
+            this.txtRaio.TabIndex = 17;
+            this.txtRaio.ValueChanged += new System.EventHandler(this.TxtRaio_ValueChanged);
             // 
             // txtAngulo
             // 
@@ -213,29 +245,32 @@
             this.lblNome.TabIndex = 9;
             this.lblNome.Text = "Nome:";
             // 
-            // txtRaio
+            // numericUpDown1
             // 
-            this.txtRaio.Location = new System.Drawing.Point(171, 170);
-            this.txtRaio.Name = "txtRaio";
-            this.txtRaio.Size = new System.Drawing.Size(59, 20);
-            this.txtRaio.TabIndex = 17;
-            this.txtRaio.ValueChanged += new System.EventHandler(this.TxtRaio_ValueChanged);
+            this.numericUpDown1.Location = new System.Drawing.Point(84, 310);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDown1.TabIndex = 21;
             // 
-            // txtPosY
+            // label5
             // 
-            this.txtPosY.Location = new System.Drawing.Point(171, 137);
-            this.txtPosY.Name = "txtPosY";
-            this.txtPosY.Size = new System.Drawing.Size(59, 20);
-            this.txtPosY.TabIndex = 18;
-            this.txtPosY.ValueChanged += new System.EventHandler(this.TxtPosY_ValueChanged);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 312);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(59, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Gravidade:";
             // 
-            // txtPosX
+            // chkDebug
             // 
-            this.txtPosX.Location = new System.Drawing.Point(58, 137);
-            this.txtPosX.Name = "txtPosX";
-            this.txtPosX.Size = new System.Drawing.Size(59, 20);
-            this.txtPosX.TabIndex = 19;
-            this.txtPosX.ValueChanged += new System.EventHandler(this.TxtPosX_ValueChanged);
+            this.chkDebug.AutoSize = true;
+            this.chkDebug.Location = new System.Drawing.Point(99, 38);
+            this.chkDebug.Name = "chkDebug";
+            this.chkDebug.Size = new System.Drawing.Size(58, 17);
+            this.chkDebug.TabIndex = 22;
+            this.chkDebug.Text = "Debug";
+            this.chkDebug.UseVisualStyleBackColor = true;
+            this.chkDebug.CheckedChanged += new System.EventHandler(this.ChkDebug_CheckedChanged);
             // 
             // Form1
             // 
@@ -251,10 +286,11 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAngulo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtRaio)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPosY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPosX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPosY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtRaio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAngulo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -279,6 +315,9 @@
         private System.Windows.Forms.NumericUpDown txtRaio;
         private System.Windows.Forms.NumericUpDown txtPosY;
         private System.Windows.Forms.NumericUpDown txtPosX;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox chkDebug;
     }
 }
 

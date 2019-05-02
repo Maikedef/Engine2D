@@ -15,6 +15,7 @@ namespace Roda
         int raio_padrao = 50;
         Engine2D engine2D = new Engine2D();
         Objeto2D obj_selecionado = new Objeto2D();
+        Objeto2D obj_mousehover = new Objeto2D();
 
         public Form1()
         {
@@ -82,6 +83,10 @@ namespace Roda
                 if (obj_selecionado != null) obj_selecionado.selecionado = false; // Deseleciona o objeto anterior
                 obj_selecionado = novo_obj_selecionado; // Define o novo objeto selecionado
                 novo_obj_selecionado.selecionado = true; // Define como selecionado
+            }
+            else
+            {
+                obj_selecionado.selecionado = false;
             }
         }
 
@@ -185,6 +190,26 @@ namespace Roda
                     obj_selecionado.pos.x = posX;
                 }
             }
+        }
+
+        private void PicDesign_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.None)
+            {
+                Objeto2D obj = 
+                    engine2D.ObterObjetoPeloPonto2D(new Vector2D(e.X, e.Y));
+
+                if (obj != null && obj_mousehover != obj)
+                {
+                    obj_mousehover = 
+                    obj_mousehover = obj;
+                }
+            }
+        }
+
+        private void ChkDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            engine2D.Debug = chkDebug.Checked;
         }
     }
 }
