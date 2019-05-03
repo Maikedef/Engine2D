@@ -28,8 +28,8 @@ namespace Roda
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            txtPosX.Maximum = txtCamPosY.Maximum = txtCamPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
-            txtPosY.Minimum = txtCamPosY.Minimum = txtCamPosX.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
+            txtPosX.Maximum = txtEscalaY.Maximum = txtEscalaX.Maximum = txtCamPosY.Maximum = txtCamPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
+            txtPosY.Minimum = txtEscalaY.Minimum = txtEscalaX.Minimum = txtCamPosY.Minimum = txtCamPosX.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
 
             BtnCirculo_Click(sender, e);
             chkDebug.Checked = true;
@@ -63,7 +63,7 @@ namespace Roda
 
             if (obj_selecionado != null)
             {
-                if (engine2D.ObjetoVisivelNaCamera(obj_selecionado))
+                if (engine2D.Objeto2DVisivelNaCamera(engine2D.camera, obj_selecionado))
                     txtVisivel.Text = "True";
                 else
                     txtVisivel.Text = "False";
@@ -72,16 +72,16 @@ namespace Roda
 
         private void PicDesign_Paint(object sender, PaintEventArgs e)
         {
-            engine2D.Render(e.Graphics);
+            engine2D.Render(engine2D.camera, e.Graphics);
         }
 
         private void PicDesign_MouseDown(object sender, MouseEventArgs e)
         {
-            Vector2D ponto = new Vector2D();
-            ponto.x = e.X;
-            ponto.y = e.Y;
+            Vetor2D ponto_tela = new Vetor2D();
+            ponto_tela.x = e.X;
+            ponto_tela.y = e.Y;
 
-            Objeto2D novo_obj_selecionado = engine2D.ObterObjetoPeloPonto2D(ponto);
+            Objeto2D novo_obj_selecionado = engine2D.ObterObjeto2DPelaCamera(engine2D.camera, ponto_tela);
             AtualizarControles(novo_obj_selecionado);
 
             // Seleciona o novo objeto
@@ -97,12 +97,13 @@ namespace Roda
             }
         }
 
-        private Vector2D PosAleatorio()
+        private Vetor2D PosAleatorio()
         {
             int x = new Random(Environment.TickCount).Next(0, picDesign.ClientRectangle.Width);
             int y = new Random(Environment.TickCount + x).Next(0, picDesign.ClientRectangle.Height);
 
-            return new Vector2D(x, y);
+            engine2D.camera.pos = new Vetor2D(x, y);
+            return new Vetor2D(x, y);
         }
 
         private void BtnQuadrado_Click(object sender, EventArgs e)
@@ -117,7 +118,8 @@ namespace Roda
             quadrado.colecaoEstilos.Add(estilo);
             quadrado.DefinirEstilo(estilo);
 
-            engine2D.AddObjeto(quadrado);
+            engine2D.AddObjeto(obj_selecionado = quadrado);
+            AtualizarControles(obj_selecionado);
         }
 
         private void BtnCirculo_Click(object sender, EventArgs e)
@@ -129,12 +131,13 @@ namespace Roda
 
             EstiloObjeto2D estilo = new EstiloObjeto2D("circulo");
             estilo.cor_borda = Color.DarkRed;
-            estilo.cor_interior = Color.AliceBlue;
+            estilo.cor_interior = Color.Transparent;
 
             circulo.colecaoEstilos.Add(estilo);
             circulo.DefinirEstilo(estilo);
 
-            engine2D.AddObjeto(circulo);
+            engine2D.AddObjeto(obj_selecionado = circulo);
+            AtualizarControles(obj_selecionado);
         }
 
         private void BtnTriangulo_Click(object sender, EventArgs e)
@@ -146,11 +149,12 @@ namespace Roda
 
             EstiloObjeto2D estilo = new EstiloObjeto2D("triangulo");
             estilo.cor_borda = Color.Red;
-            estilo.cor_interior = Color.Yellow;
+            estilo.cor_interior = Color.Transparent;
             triangulo.colecaoEstilos.Add(estilo);
             triangulo.DefinirEstilo(estilo);
 
-            engine2D.AddObjeto(triangulo);
+            engine2D.AddObjeto(obj_selecionado = triangulo);
+            AtualizarControles(obj_selecionado);
         }
 
         private void BtnPentagono_Click(object sender, EventArgs e)
@@ -165,7 +169,8 @@ namespace Roda
             pentagono.colecaoEstilos.Add(estilo);
             pentagono.DefinirEstilo(estilo);
 
-            engine2D.AddObjeto(pentagono);
+            engine2D.AddObjeto(obj_selecionado = pentagono);
+            AtualizarControles(obj_selecionado);
         }
 
         private void TxtNome_TextChanged(object sender, EventArgs e)
@@ -209,7 +214,8 @@ namespace Roda
                 float posY;
                 if (float.TryParse(txtPosY.Text, out posY))
                 {
-                    obj_selecionado.pos.x = posY;
+                    obj_selecionado.pos.y = posY;
+                    obj_selecionado.AtualizarObjeto();
                 }
             }
         }
@@ -222,6 +228,7 @@ namespace Roda
                 if (float.TryParse(txtPosX.Text, out posX))
                 {
                     obj_selecionado.pos.x = posX;
+                    obj_selecionado.AtualizarObjeto();
                 }
             }
         }
@@ -231,7 +238,7 @@ namespace Roda
             if (e.Button == MouseButtons.None)
             {
                 Objeto2D obj = 
-                    engine2D.ObterObjetoPeloPonto2D(new Vector2D(e.X, e.Y));
+                    engine2D.ObterObjeto2DPelaCamera(engine2D.camera, new Vetor2D(e.X, e.Y));
 
                 if (obj != null && obj_mousehover != obj)
                 {
@@ -274,6 +281,32 @@ namespace Roda
         {
             engine2D.camera.width = picDesign.ClientRectangle.Width;
             engine2D.camera.heigth = picDesign.ClientRectangle.Height;
+        }
+
+        private void TxtEscalaY_ValueChanged(object sender, EventArgs e)
+        {
+            if (obj_selecionado != null && txtEscalaY.Focused)
+            {
+                float escalaY;
+                if (float.TryParse(txtEscalaY.Text, out escalaY))
+                {
+                    obj_selecionado.escala.y = escalaY;
+                    obj_selecionado.AtualizarObjeto();
+                }
+            }
+        }
+
+        private void TxtEscalaX_ValueChanged(object sender, EventArgs e)
+        {
+            if (obj_selecionado != null && txtEscalaX.Focused)
+            {
+                float escalaX;
+                if (float.TryParse(txtEscalaX.Text, out escalaX))
+                {
+                    obj_selecionado.escala.x = escalaX;
+                    obj_selecionado.AtualizarObjeto();
+                }
+            }
         }
     }
 }

@@ -9,12 +9,18 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    public struct Vector2D
+    public enum TipoObjeto2D
+    {
+        Estatico,
+        Dinamico
+    }
+
+    public struct Vetor2D
     {
         public float x;
         public float y;
 
-        public Vector2D(float x, float y)
+        public Vetor2D(float x, float y)
         {
             this.x = x;
             this.y = y;
@@ -26,7 +32,6 @@ namespace Engine
         public float x;
         public float y;
         public float rad;
-        public float new_rad;
         public float raio;
         public Color cor;
     }
@@ -113,18 +118,30 @@ namespace Engine
 
     public class Objeto2D
     {
+        public TipoObjeto2D Tipo = TipoObjeto2D.Estatico;
         public bool visivelTela;
 
         public string nome;
-        public Vector2D pos;
-        
+        public Vetor2D pos = new Vetor2D(0, 0);
+        public Vetor2D escala = new Vetor2D(1, 1);
+
+        public float xMax;      // Maior valor de x
+        public float xMin;      // Menor valor de x
+        public float yMax;      // Maior valor de y
+        public float yMin;      // Menor valor de y
+
+        /// <summary>Raio é distância do centro a um ponto qualquer da circunferência.</summary>
         public float raio;
         public float angulo;
-        public Vertice2D[] vertices;
+
+        /// <summary>Vértices do ângulo</summary>
+        public Vertice2D[] vertices = new Vertice2D[0];
         public bool selecionado;
         public ColecaoEstiloObjeto2D colecaoEstilos = new ColecaoEstiloObjeto2D();
         public EstiloObjeto2D estilo_atual;
         public EstiloObjeto2D estilo_selecao;
+
+        public List<Animacao> animacoes = new List<Animacao>();
 
         public bool fisica;
 
@@ -151,6 +168,11 @@ namespace Engine
         {
             Array.Resize(ref vertices, vertices.Length + 1);
             vertices[vertices.Length - 1] = vetor;
+
+            this.xMax = vertices.Max(x => x.x);
+            this.xMin = vertices.Min(x => x.x);
+            this.yMax = vertices.Max(x => x.y);
+            this.yMin = vertices.Min(x => x.y);
         }
 
         public void DefinirEstilo(EstiloObjeto2D estilo)
@@ -165,50 +187,50 @@ namespace Engine
 
         public void GerarCirculo(float raio, int quant = 20)
         {
-            GerarObjetoRadial(raio, quant);
+            GerarObjetoRadial(0, raio, quant);
         }
 
         public void GerarTriangulo(float raio)
         {
-            GerarObjetoRadial(raio, 3);
+            GerarObjetoRadial(0, raio, 3);
         }
 
         public void GerarQuadrado(float raio)
         {
-            GerarObjetoRadial(raio, 4);
-            angulo = 45;
+            GerarObjetoRadial(45, raio, 4);
         }
 
         public void GerarPentagono(float raio)
         {
-            GerarObjetoRadial(raio, 5);
+            GerarObjetoRadial(0, raio, 5);
         }
 
-        public void GerarObjetoRadial(float raio, int lados)
+        public void GerarObjetoRadial(float angulo, float raio, int lados)
         {
-            this.raio = raio;
-            vertices = new Vertice2D[lados + 1];
+            this.angulo = angulo;
+            this.raio = raio; // raio global
+            //vertices = new Vertice2D[lados + 1];
             float rad = (float)(Math.PI * 2 / lados);
-            for (int i = 0; i < lados + 1; i += 1)
+            for (int i = 0; i < lados + 1; i++)
             {
                 Vertice2D v = new Vertice2D();
-                v.x = (float)(Math.Sin(i * rad) * raio);
-                v.y = (float)(Math.Cos(i * rad) * raio);
+                v.x = (float)(Math.Sin(i * rad + Angulo2Radiano(angulo)) * raio);
+                v.y = (float)(Math.Cos(i * rad + Angulo2Radiano(angulo)) * raio);
                 v.cor = Color.Black;
                 v.rad = i * rad;
-                v.raio = raio;
-                vertices[i] = v;
+                v.raio = raio; // raio local
+                AddVertice(v);
             }
         }
 
         public void AtualizarObjeto()
         {
-            float rad_diff = vertices[0].raio - Angulo2Radiano(angulo);
+            // TODO: Calcular escala do objeto usando porcentagem das distancias entre xmax e xmin, ymax e ymin
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i].x = (float)Math.Sin(vertices[i].rad + rad_diff) * vertices[i].raio;
-                vertices[i].y = (float)Math.Cos(vertices[i].rad + rad_diff) * vertices[i].raio;
+                vertices[i].x = (float)Math.Sin(vertices[i].rad + Angulo2Radiano(angulo)) * vertices[i].raio;
+                vertices[i].y = (float)Math.Cos(vertices[i].rad + Angulo2Radiano(angulo)) * vertices[i].raio;
             }
         }
         private float Angulo2Radiano(float angulo)
