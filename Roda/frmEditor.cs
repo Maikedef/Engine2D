@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace Roda
 {
     public partial class Form1 : Form
     {
+        bool _sair = false;
         int raio_padrao = 50;
         Engine2D engine2D = new Engine2D();
         Objeto2D obj_selecionado = new Objeto2D();
@@ -22,8 +24,8 @@ namespace Roda
         {
             InitializeComponent();
 
-            DoubleBuffered = true;
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            //DoubleBuffered = true;
+            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -34,7 +36,27 @@ namespace Roda
             BtnCirculo_Click(sender, e);
             chkDebug.Checked = true;
 
-            engine2D.camera = new Camera(0, 0, picDesign.ClientRectangle.Width, picDesign.ClientRectangle.Height);
+            engine2D.camera = new Camera(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
+            engine2D.camera.pos = new Vetor2D(obj_selecionado.pos.x, obj_selecionado.pos.y);
+
+            
+
+            Show();
+
+            Camera camera = engine2D.camera;
+            Graphics g;
+            Bitmap bmp = new Bitmap(camera.width, camera.heigth, g = picScreen.CreateGraphics());
+
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            //BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
+            bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
+
+            while (!_sair)
+            {
+                picScreen.Invalidate();
+                engine2D.Render(engine2D.camera, g);
+                Application.DoEvents();
+            }
         }
 
         private void AtualizarControles(Objeto2D objeto2d)
@@ -57,50 +79,43 @@ namespace Roda
             }
         }
 
-        private void TmrRender_Tick(object sender, EventArgs e)
-        {
-            Refresh();
-
-            if (obj_selecionado != null)
-            {
-                if (engine2D.Objeto2DVisivelNaCamera(engine2D.camera, obj_selecionado))
-                    txtVisivel.Text = "True";
-                else
-                    txtVisivel.Text = "False";
-            }
-        }
-
         private void PicDesign_Paint(object sender, PaintEventArgs e)
         {
             engine2D.Render(engine2D.camera, e.Graphics);
         }
 
+        Point cameraDrag;
         private void PicDesign_MouseDown(object sender, MouseEventArgs e)
         {
-            Vetor2D ponto_tela = new Vetor2D();
-            ponto_tela.x = e.X;
-            ponto_tela.y = e.Y;
-
-            Objeto2D novo_obj_selecionado = engine2D.ObterObjeto2DPelaCamera(engine2D.camera, ponto_tela);
-            AtualizarControles(novo_obj_selecionado);
-
-            // Seleciona o novo objeto
-            if (novo_obj_selecionado != null)
+            if (e.Button == MouseButtons.Middle)
             {
-                if (obj_selecionado != null) obj_selecionado.selecionado = false; // Deseleciona o objeto anterior
-                obj_selecionado = novo_obj_selecionado; // Define o novo objeto selecionado
-                novo_obj_selecionado.selecionado = true; // Define como selecionado
+                cameraDrag = e.Location;
             }
-            else
+            else if (e.Button == MouseButtons.Left)
             {
-                obj_selecionado.selecionado = false;
+                Objeto2D novo_obj_selecionado =
+                    engine2D.ObterObjeto2DPelaCamera(engine2D.camera, new Vetor2D(e.X, e.Y));
+
+                // Seleciona o novo objeto
+                if (novo_obj_selecionado != null)
+                {
+                    if (obj_selecionado != null) obj_selecionado.selecionado = false; // Deseleciona o objeto anterior
+                    obj_selecionado = novo_obj_selecionado; // Define o novo objeto selecionado
+                    novo_obj_selecionado.selecionado = true; // Define como selecionado
+                }
+                else
+                {
+                    obj_selecionado.selecionado = false;
+                }
+
+                AtualizarControles(novo_obj_selecionado);
             }
         }
 
         private Vetor2D PosAleatorio()
         {
-            int x = new Random(Environment.TickCount).Next(0, picDesign.ClientRectangle.Width);
-            int y = new Random(Environment.TickCount + x).Next(0, picDesign.ClientRectangle.Height);
+            int x = new Random(Environment.TickCount).Next(0, picScreen.ClientRectangle.Width);
+            int y = new Random(Environment.TickCount + x).Next(0, picScreen.ClientRectangle.Height);
 
             engine2D.camera.pos = new Vetor2D(x, y);
             return new Vetor2D(x, y);
@@ -235,15 +250,21 @@ namespace Roda
 
         private void PicDesign_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.None)
+            if (e.Button == MouseButtons.Middle)
             {
+                engine2D.camera.pos.x += (((float)cameraDrag.X - e.X) * (float)0.01 * engine2D.TempoDelta);
+                engine2D.camera.pos.y += (((float)cameraDrag.Y - e.Y) * (float)0.01 * engine2D.TempoDelta);
+            }
+            else if (e.Button == MouseButtons.None)
+            {
+                // Seleciona ao passar com o mouse sobre o objeto
+
                 Objeto2D obj = 
                     engine2D.ObterObjeto2DPelaCamera(engine2D.camera, new Vetor2D(e.X, e.Y));
 
                 if (obj != null && obj_mousehover != obj)
                 {
-                    obj_mousehover = 
-                    obj_mousehover = obj;
+                    
                 }
             }
         }
@@ -279,8 +300,8 @@ namespace Roda
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            engine2D.camera.width = picDesign.ClientRectangle.Width;
-            engine2D.camera.heigth = picDesign.ClientRectangle.Height;
+            engine2D.camera.width = picScreen.ClientRectangle.Width;
+            engine2D.camera.heigth = picScreen.ClientRectangle.Height;
         }
 
         private void TxtEscalaY_ValueChanged(object sender, EventArgs e)
@@ -295,7 +316,6 @@ namespace Roda
                 }
             }
         }
-
         private void TxtEscalaX_ValueChanged(object sender, EventArgs e)
         {
             if (obj_selecionado != null && txtEscalaX.Focused)
@@ -306,6 +326,22 @@ namespace Roda
                     obj_selecionado.escala.x = escalaX;
                     obj_selecionado.AtualizarObjeto();
                 }
+            }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _sair = true;
+        }
+
+        private void TmrObjeto2D_Tick(object sender, EventArgs e)
+        {
+            if (obj_selecionado != null)
+            {
+                if (engine2D.Objeto2DVisivelNaCamera(engine2D.camera, obj_selecionado))
+                    txtVisivel.Text = "True";
+                else
+                    txtVisivel.Text = "False";
             }
         }
     }

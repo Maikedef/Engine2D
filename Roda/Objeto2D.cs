@@ -232,6 +232,11 @@ namespace Engine
                 vertices[i].x = (float)Math.Sin(vertices[i].rad + Angulo2Radiano(angulo)) * vertices[i].raio;
                 vertices[i].y = (float)Math.Cos(vertices[i].rad + Angulo2Radiano(angulo)) * vertices[i].raio;
             }
+
+            this.xMax = vertices.Max(x => x.x);
+            this.xMin = vertices.Min(x => x.x);
+            this.yMax = vertices.Max(x => x.y);
+            this.yMin = vertices.Min(x => x.y);
         }
         private float Angulo2Radiano(float angulo)
         {

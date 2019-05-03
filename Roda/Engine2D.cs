@@ -13,12 +13,15 @@ namespace Engine
 
     public class Engine2D
     {
-        public Camera camera = new Camera(0, 0, 0, 0);
+        public Camera camera = new Camera(0, 0);
         public float gravidade = 1F;
-        public int QuadrosPorSegundo { get; private set; }
+        public int FPS { get; private set; }
         public bool Debug { get; set; }
         private int _quantQuadrosPorSegundo = 0;
         private int _tickSegundo = 0;
+
+        /// <summary>Tempo de atraso entre uma renderização e outra</summary>
+        public int TempoDelta;
 
         Objeto2D[] objetos2d = new Objeto2D[0];
 
@@ -87,10 +90,13 @@ namespace Engine
             int tempoGasto = Environment.TickCount - tick;
         }
 
+        Point pontoA = new Point();
+        Point pontoB = new Point();
+        int _tickRender;
         public void Render(Camera camera, Graphics g)
         {
-            int tick = Environment.TickCount;
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            TempoDelta = Environment.TickCount - _tickRender;
+            _tickRender = Environment.TickCount;
 
             for (int i = 0; i < objetos2d.Length; i++)
             {
@@ -111,10 +117,11 @@ namespace Engine
                     // Desenha apenas objetos que visíveis na câmera
 
                     // Desenha as linhas entre as vértices na câmera
-                    g.DrawLine(
-                        new Pen(estilo.cor_borda, estilo.pen_width), 
-                        new Point((int)(-(camera.pos.x - camera.width / 2) + obj.pos.x + v1.x), (int)(-(camera.pos.y - camera.heigth / 2) + obj.pos.y + v1.y)), 
-                        new Point((int)(-(camera.pos.x - camera.width / 2) + obj.pos.x + v2.x), (int)(-(camera.pos.y - camera.heigth / 2) + obj.pos.y + v2.y)));
+                    pontoA.X = (int)(-(camera.pos.x - camera.width / 2) + obj.pos.x + v1.x);
+                    pontoA.Y = (int)(-(camera.pos.y - camera.heigth / 2) + obj.pos.y + v1.y);
+                    pontoB.X = (int)(-(camera.pos.x - camera.width / 2) + obj.pos.x + v2.x);
+                    pontoB.Y = (int)(-(camera.pos.y - camera.heigth / 2) + obj.pos.y + v2.y);
+                    g.DrawLine(new Pen(estilo.cor_borda, estilo.pen_width), pontoA, pontoB);
 
                     // Pinta o interior do(s) objeto(s) 2d na câmera
                     if (obj.estilo_atual.cor_interior != Color.Transparent)
@@ -124,7 +131,6 @@ namespace Engine
                             (int)(-camera.pos.x + obj.pos.x + ponto.x), 
                             (int)(-camera.pos.y + obj.pos.y + ponto.y))).ToArray());
                         g.FillPath(new SolidBrush(obj.estilo_atual.cor_interior), preenchimento);
-
                     }
                     
                     // Exibe informações de depuração
@@ -132,7 +138,7 @@ namespace Engine
                     {
                         using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
                         {
-                            g.DrawString("FPS: " + QuadrosPorSegundo, font, new SolidBrush(Color.Blue), new Point(10, 10));
+                            g.DrawString("FPS: " + FPS, font, new SolidBrush(Color.Blue), new Point(10, 10));
                             g.DrawString($"CameraPos: {camera.pos.x},{camera.pos.y}", font, new SolidBrush(Color.Blue), new Point(80, 10));
                         }
                     }
@@ -142,7 +148,7 @@ namespace Engine
             // Cáculo de Quadros por Segundo
             if (Environment.TickCount - _tickSegundo >= 1000)
             {
-                QuadrosPorSegundo = _quantQuadrosPorSegundo;
+                FPS = _quantQuadrosPorSegundo;
                 _quantQuadrosPorSegundo = 0;
                 _tickSegundo = Environment.TickCount;
             }
@@ -151,7 +157,7 @@ namespace Engine
                 _quantQuadrosPorSegundo++;
             }
 
-            int tempoGato = Environment.TickCount - tick;
+            int tempoGato = Environment.TickCount - _tickRender;
         }
 
         public bool Objeto2DVisivelNaCamera(Camera camera, Objeto2D objeto2d)
@@ -161,8 +167,8 @@ namespace Engine
             float yMax = -(camera.pos.y - camera.heigth / 2) + objeto2d.pos.y + objeto2d.yMax;
             float yMin = -(camera.pos.y - camera.heigth / 2) + objeto2d.pos.y + objeto2d.yMin;
 
-            if (xMax > camera.pos.x || xMin > camera.pos.x)
-                if (yMax > camera.pos.y || yMin > camera.pos.y)
+            if (xMax >= 0 && xMin <= camera.width)
+                if (yMax >= 0 && yMin <= camera.heigth)
                 {
                     return true;
                 }

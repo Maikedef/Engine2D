@@ -16,17 +16,17 @@ namespace Engine
         public float zoom = 0F;
 
         /// <summary>Largura da tela</summary>
-        public float width = 0F;
+        public int width = 640;
 
         /// <summary>Altura da tela</summary>
-        public float heigth = 0F;
+        public int heigth = 480;
 
         /// <summary>Proporção de tela</summary>
         public float AspectRatio = 0F;
 
-        public Camera(float x, float y, float width, float heigth)
+        public Camera(int width, int heigth)
         {
-            this.pos = new Vetor2D(x, y);
+            this.pos = new Vetor2D(0, 0);
             this.width = width;
             this.heigth = heigth;
         }
