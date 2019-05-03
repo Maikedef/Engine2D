@@ -8,6 +8,8 @@ namespace Engine
 {
     public class Camera
     {
+        public List<Animacao> animacoes = new List<Animacao>();
+
         /// <summary>Posição da Câmera no espaço</summary>
         public Vetor2D pos = new Vetor2D();
 

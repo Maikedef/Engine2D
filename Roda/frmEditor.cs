@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Engine;
@@ -23,23 +24,30 @@ namespace Roda
         public Form1()
         {
             InitializeComponent();
-
-            //DoubleBuffered = true;
-            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             txtPosX.Maximum = txtEscalaY.Maximum = txtEscalaX.Maximum = txtCamPosY.Maximum = txtCamPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
             txtPosY.Minimum = txtEscalaY.Minimum = txtEscalaX.Minimum = txtCamPosY.Minimum = txtCamPosX.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
-
-            BtnCirculo_Click(sender, e);
             chkDebug.Checked = true;
 
             engine2D.camera = new Camera(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
             engine2D.camera.pos = new Vetor2D(obj_selecionado.pos.x, obj_selecionado.pos.y);
 
-            
+            cboObjeto2D.DataSource = engine2D.objetos2d.Select(
+                obj => new
+                {
+                    id = obj.id,
+                    nome = obj.nome,
+                    obj = obj
+                }).ToList();
+
+            cboObjeto2D.DisplayMember = "nome";
+            cboObjeto2D.ValueMember = "obj";
+
+            BtnCirculo_Click(sender, e);
+            AtualizarControles(null);
 
             Show();
 
@@ -47,23 +55,46 @@ namespace Roda
             Graphics g;
             Bitmap bmp = new Bitmap(camera.width, camera.heigth, g = picScreen.CreateGraphics());
 
-            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            //Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             //BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
-            bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
+            //bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
+            // g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
+            // Loop principal de rotinas do simulador 2D
             while (!_sair)
             {
+                // Use o tempo delta em todos os cálculos que alteram o comportamento dos objetos 2d
+                // para que rode em processadores de baixo e alto desempenho sem alterar a qualidade do simulador
+
+                // TODO: Insira toda sua rotina aqui
+
+                if (moveCamera)
+                {
+                    engine2D.camera.pos.x += -(float)((cameraDrag.X - Cursor.Position.X) * engine2D.TempoDelta * 0.01);
+                    engine2D.camera.pos.y += -(float)((cameraDrag.Y - Cursor.Position.Y) * engine2D.TempoDelta * 0.01);
+                }
+
+                #region Renderização
                 picScreen.Invalidate();
                 engine2D.Render(engine2D.camera, g);
                 Application.DoEvents();
+                #endregion
             }
         }
 
         private void AtualizarControles(Objeto2D objeto2d)
         {
+            cboObjeto2D.DataSource = engine2D.objetos2d.Select(
+                obj => new
+                {
+                    id = obj.id,
+                    nome = obj.nome,
+                    obj = obj
+                }).ToList();
+            
             if (objeto2d != null)
             {
-                txtNome.Text = objeto2d.nome;
+                cboObjeto2D.SelectedValue = objeto2d;
                 txtPosX.Text = objeto2d.pos.x.ToString();
                 txtPosY.Text = objeto2d.pos.y.ToString();
                 txtAngulo.Text = objeto2d.angulo.ToString();
@@ -71,7 +102,6 @@ namespace Roda
             }
             else
             {
-                txtNome.Text = string.Empty;
                 txtPosX.Text = string.Empty;
                 txtPosY.Text = string.Empty;
                 txtAngulo.Text = string.Empty;
@@ -89,7 +119,7 @@ namespace Roda
         {
             if (e.Button == MouseButtons.Middle)
             {
-                cameraDrag = e.Location;
+                cameraDrag = Cursor.Position;
             }
             else if (e.Button == MouseButtons.Left)
             {
@@ -124,7 +154,7 @@ namespace Roda
         private void BtnQuadrado_Click(object sender, EventArgs e)
         {
             Objeto2D quadrado = new Objeto2D();
-            quadrado.nome = "Quadrado1";
+            quadrado.nome = "Quadrado";
             quadrado.pos = PosAleatorio();
             quadrado.GerarQuadrado(raio_padrao);
 
@@ -140,7 +170,7 @@ namespace Roda
         private void BtnCirculo_Click(object sender, EventArgs e)
         {
             Objeto2D circulo = new Objeto2D();
-            circulo.nome = "Circulo1";
+            circulo.nome = "Circulo";
             circulo.pos = PosAleatorio();
             circulo.GerarCirculo(raio_padrao);
 
@@ -158,7 +188,7 @@ namespace Roda
         private void BtnTriangulo_Click(object sender, EventArgs e)
         {
             Objeto2D triangulo = new Objeto2D();
-            triangulo.nome = "Triangulo1";
+            triangulo.nome = "Triangulo";
             triangulo.pos = PosAleatorio();
             triangulo.GerarTriangulo(raio_padrao);
 
@@ -175,7 +205,7 @@ namespace Roda
         private void BtnPentagono_Click(object sender, EventArgs e)
         {
             Objeto2D pentagono = new Objeto2D();
-            pentagono.nome = "Pentagono1";
+            pentagono.nome = "Pentagono";
             pentagono.pos = PosAleatorio();
             pentagono.GerarPentagono(raio_padrao);
 
@@ -190,9 +220,9 @@ namespace Roda
 
         private void TxtNome_TextChanged(object sender, EventArgs e)
         {
-            if (obj_selecionado != null && txtNome.Focused)
+            if (obj_selecionado != null && cboObjeto2D.Focused)
             {
-                obj_selecionado.nome = txtNome.Text;
+                obj_selecionado.nome = cboObjeto2D.Text;
             }
         }
 
@@ -248,24 +278,26 @@ namespace Roda
             }
         }
 
+        bool moveCamera = false;
+
         private void PicDesign_MouseMove(object sender, MouseEventArgs e)
         {
+            moveCamera = false;
             if (e.Button == MouseButtons.Middle)
             {
-                engine2D.camera.pos.x += (((float)cameraDrag.X - e.X) * (float)0.01 * engine2D.TempoDelta);
-                engine2D.camera.pos.y += (((float)cameraDrag.Y - e.Y) * (float)0.01 * engine2D.TempoDelta);
+                moveCamera = true;
             }
             else if (e.Button == MouseButtons.None)
             {
                 // Seleciona ao passar com o mouse sobre o objeto
 
-                Objeto2D obj = 
-                    engine2D.ObterObjeto2DPelaCamera(engine2D.camera, new Vetor2D(e.X, e.Y));
+                //Objeto2D obj = 
+                //    engine2D.ObterObjeto2DPelaCamera(engine2D.camera, new Vetor2D(e.X, e.Y));
 
-                if (obj != null && obj_mousehover != obj)
-                {
+                //if (obj != null && obj_mousehover != obj)
+                //{
                     
-                }
+                //}
             }
         }
 
@@ -342,6 +374,42 @@ namespace Roda
                     txtVisivel.Text = "True";
                 else
                     txtVisivel.Text = "False";
+            }
+
+            if (!txtCamPosX.Focused) txtCamPosX.Value = (decimal)engine2D.camera.pos.x;
+            if (!txtCamPosY.Focused) txtCamPosY.Value = (decimal)engine2D.camera.pos.y;
+            if (!txtCamAngulo.Focused) txtCamAngulo.Value = (decimal)engine2D.camera.angulo;
+            if (!txtCamZoom.Focused) txtCamZoom.Value = (decimal)engine2D.camera.zoom;
+        }
+
+        private void BtnVarios_Click(object sender, EventArgs e)
+        {
+            int quant = 50 / 4;
+
+            for (int i = 0; i < quant; i++)
+            {
+                BtnCirculo_Click(sender, e);
+                Thread.Sleep(20);
+                BtnTriangulo_Click(sender, e);
+                Thread.Sleep(20);
+                BtnQuadrado_Click(sender, e);
+                Thread.Sleep(20);
+                BtnPentagono_Click(sender, e);
+                Thread.Sleep(20);
+            }
+        }
+
+        private void BtnFocarObjeto_Click(object sender, EventArgs e)
+        {
+            if (cboObjeto2D.SelectedValue == null) return;
+            engine2D.camera.pos = ((Objeto2D)cboObjeto2D.SelectedValue).pos;
+        }
+
+        private void CboObjeto2D_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboObjeto2D.Focused)
+            {
+                BtnFocarObjeto_Click(sender, e);
             }
         }
     }

@@ -118,10 +118,11 @@ namespace Engine
 
     public class Objeto2D
     {
-        public TipoObjeto2D Tipo = TipoObjeto2D.Estatico;
-        public bool visivelTela;
+        public int id { get; set; }
+        public string nome { get; set; }
 
-        public string nome;
+        public TipoObjeto2D Tipo = TipoObjeto2D.Estatico;
+
         public Vetor2D pos = new Vetor2D(0, 0);
         public Vetor2D escala = new Vetor2D(1, 1);
 
@@ -209,7 +210,6 @@ namespace Engine
         {
             this.angulo = angulo;
             this.raio = raio; // raio global
-            //vertices = new Vertice2D[lados + 1];
             float rad = (float)(Math.PI * 2 / lados);
             for (int i = 0; i < lados + 1; i++)
             {

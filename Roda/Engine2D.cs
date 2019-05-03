@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace Engine
 {
-    
-
-
     public class Engine2D
     {
+        int id_objeto = 0;
+
         public Camera camera = new Camera(0, 0);
         public float gravidade = 1F;
         public int FPS { get; private set; }
@@ -23,29 +22,43 @@ namespace Engine
         /// <summary>Tempo de atraso entre uma renderização e outra</summary>
         public int TempoDelta;
 
-        Objeto2D[] objetos2d = new Objeto2D[0];
+        public List<Objeto2D> objetos2d { get; set; } = new List<Objeto2D>();
 
         public void AddObjeto(Objeto2D objeto2d)
         {
-            Array.Resize(ref objetos2d, objetos2d.Length + 1);
-            objetos2d[objetos2d.Length - 1] = objeto2d;
+            objeto2d.id = id_objeto++;
+            Objeto2D ambiguo = objetos2d.Where(x => objeto2d.nome.StartsWith(x.nome)).LastOrDefault();
+            if (ambiguo != null)
+            {
+                int length = objeto2d.nome.Length;
+                int number;
+                if (int.TryParse(ambiguo.nome.Substring(length), out number))
+                {
+                    objeto2d.nome += number;
+                }
+            }
+            objetos2d.Add(objeto2d);
+
+            //Array.Resize(ref objetos2d, objetos2d.Length + 1);
+            //objeto2d.id = id_objeto++;
+            //objetos2d[objetos2d.Length - 1] = objeto2d;
         }
 
         /// <summary>
-        /// Obtém o objeto 2d através do espaço
+        /// Obtém o objeto 2d através do espaço. Utilize coordenadas existentes em todo o mapa 2D.
         /// </summary>
         /// <param name="ponto"></param>
         /// <returns></returns>
         public Objeto2D ObterObjeto2DPeloEspaco(Vetor2D ponto)
         {
-            for (int i = 0; i < objetos2d.Length; i++)
+            for (int i = 0; i < objetos2d.Count; i++)
             {
                 Objeto2D obj = objetos2d[i];
 
-                float xMax = obj.pos.x + obj.vertices.Max(x => x.x);
-                float xMin = obj.pos.x + obj.vertices.Min(x => x.x);
-                float yMax = obj.pos.y + obj.vertices.Max(x => x.y);
-                float yMin = obj.pos.y + obj.vertices.Min(x => x.y);
+                float xMax = obj.pos.x + obj.xMax;
+                float xMin = obj.pos.x + obj.xMin;
+                float yMax = obj.pos.y + obj.yMax;
+                float yMin = obj.pos.y + obj.yMin;
 
                 if (ponto.x >= xMin && ponto.x <= xMax)
                     if (ponto.y >= yMin && ponto.y <= yMax)
@@ -57,13 +70,13 @@ namespace Engine
         }
 
         /// <summary>
-        /// Obtém o objeto 2d através da camera
+        /// Obtém o objeto 2d através da camera. Utilize X = 0 a Width, Y = 0 a Height
         /// </summary>
         /// <param name="ponto"></param>
         /// <returns></returns>
         public Objeto2D ObterObjeto2DPelaCamera(Camera camera, Vetor2D ponto)
         {
-            for (int i = 0; i < objetos2d.Length; i++)
+            for (int i = 0; i < objetos2d.Count; i++)
             {
                 Objeto2D obj = objetos2d[i];
 
@@ -85,7 +98,7 @@ namespace Engine
         {
             int tick = Environment.TickCount;
 
-
+            // TODO: Física
 
             int tempoGasto = Environment.TickCount - tick;
         }
@@ -98,9 +111,10 @@ namespace Engine
             TempoDelta = Environment.TickCount - _tickRender;
             _tickRender = Environment.TickCount;
 
-            for (int i = 0; i < objetos2d.Length; i++)
+            for (int i = 0; i < objetos2d.Count; i++)
             {
                 Objeto2D obj = objetos2d[i];
+                if (!Objeto2DVisivelNaCamera(camera, obj)) continue;
 
                 for (int v = 1; v < obj.vertices.Length; v++)
                 {
@@ -114,34 +128,32 @@ namespace Engine
                     else
                         estilo = obj.estilo_atual;
 
-                    // Desenha apenas objetos que visíveis na câmera
-
                     // Desenha as linhas entre as vértices na câmera
                     pontoA.X = (int)(-(camera.pos.x - camera.width / 2) + obj.pos.x + v1.x);
                     pontoA.Y = (int)(-(camera.pos.y - camera.heigth / 2) + obj.pos.y + v1.y);
                     pontoB.X = (int)(-(camera.pos.x - camera.width / 2) + obj.pos.x + v2.x);
                     pontoB.Y = (int)(-(camera.pos.y - camera.heigth / 2) + obj.pos.y + v2.y);
                     g.DrawLine(new Pen(estilo.cor_borda, estilo.pen_width), pontoA, pontoB);
+                }
 
-                    // Pinta o interior do(s) objeto(s) 2d na câmera
-                    if (obj.estilo_atual.cor_interior != Color.Transparent)
-                    {
-                        GraphicsPath preenchimento = new GraphicsPath(FillMode.Alternate);
-                        preenchimento.AddLines(obj.vertices.ToList().Select(ponto => new Point(
-                            (int)(-camera.pos.x + obj.pos.x + ponto.x), 
-                            (int)(-camera.pos.y + obj.pos.y + ponto.y))).ToArray());
-                        g.FillPath(new SolidBrush(obj.estilo_atual.cor_interior), preenchimento);
-                    }
-                    
-                    // Exibe informações de depuração
-                    if (this.Debug)
-                    {
-                        using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
-                        {
-                            g.DrawString("FPS: " + FPS, font, new SolidBrush(Color.Blue), new Point(10, 10));
-                            g.DrawString($"CameraPos: {camera.pos.x},{camera.pos.y}", font, new SolidBrush(Color.Blue), new Point(80, 10));
-                        }
-                    }
+                // Pinta o interior do objeto 2d
+                if (obj.estilo_atual.cor_interior != Color.Transparent)
+                {
+                    GraphicsPath preenchimento = new GraphicsPath(FillMode.Alternate);
+                    preenchimento.AddLines(obj.vertices.ToList().Select(ponto => new Point(
+                        (int)(-camera.pos.x + obj.pos.x + ponto.x),
+                        (int)(-camera.pos.y + obj.pos.y + ponto.y))).ToArray());
+                    g.FillPath(new SolidBrush(obj.estilo_atual.cor_interior), preenchimento);
+                }
+            }
+
+            // Exibe informações de depuração
+            if (this.Debug)
+            {
+                using (Font font = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel))
+                {
+                    g.DrawString("FPS: " + FPS, font, new SolidBrush(Color.Blue), new Point(10, 10));
+                    //g.DrawString($"CameraPos: {camera.pos.x},{camera.pos.y}", font, new SolidBrush(Color.Blue), new Point(80, 10));
                 }
             }
 

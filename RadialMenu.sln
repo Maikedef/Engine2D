@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SenoCosseno", "SenoCosseno\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PonteiroGravidade", "PonteiroGravidade\PonteiroGravidade.csproj", "{109DD572-152C-497A-9AFC-3F01CA1866CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Roda\Engine.csproj", "{3BE0D62D-9B75-4D9E-ADC5-FF5917C78E52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine2D", "Roda\Engine2D.csproj", "{3BE0D62D-9B75-4D9E-ADC5-FF5917C78E52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

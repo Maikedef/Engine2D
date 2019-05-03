@@ -43,10 +43,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cboObjeto2D = new System.Windows.Forms.ComboBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.txtEscalaX = new System.Windows.Forms.NumericUpDown();
             this.txtEscalaY = new System.Windows.Forms.NumericUpDown();
-            this.txtNome = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -68,6 +68,8 @@
             this.txtCamPosY = new System.Windows.Forms.NumericUpDown();
             this.chkDebug = new System.Windows.Forms.CheckBox();
             this.tmrObjeto2D = new System.Windows.Forms.Timer(this.components);
+            this.btnVarios = new System.Windows.Forms.Button();
+            this.btnFocarObjeto = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -177,6 +179,7 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.btnVarios);
             this.panel1.Controls.Add(this.groupBox4);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
@@ -230,11 +233,12 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnFocarObjeto);
+            this.groupBox2.Controls.Add(this.cboObjeto2D);
             this.groupBox2.Controls.Add(this.lblNome);
             this.groupBox2.Controls.Add(this.txtEscalaX);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.txtEscalaY);
-            this.groupBox2.Controls.Add(this.txtNome);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label4);
@@ -252,6 +256,15 @@
             this.groupBox2.TabIndex = 34;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Objeto 2D";
+            // 
+            // cboObjeto2D
+            // 
+            this.cboObjeto2D.FormattingEnabled = true;
+            this.cboObjeto2D.Location = new System.Drawing.Point(55, 19);
+            this.cboObjeto2D.Name = "cboObjeto2D";
+            this.cboObjeto2D.Size = new System.Drawing.Size(132, 21);
+            this.cboObjeto2D.TabIndex = 34;
+            this.cboObjeto2D.SelectedIndexChanged += new System.EventHandler(this.CboObjeto2D_SelectedIndexChanged);
             // 
             // lblNome
             // 
@@ -277,14 +290,6 @@
             this.txtEscalaY.Size = new System.Drawing.Size(59, 20);
             this.txtEscalaY.TabIndex = 32;
             this.txtEscalaY.ValueChanged += new System.EventHandler(this.TxtEscalaY_ValueChanged);
-            // 
-            // txtNome
-            // 
-            this.txtNome.Location = new System.Drawing.Point(55, 17);
-            this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(182, 20);
-            this.txtNome.TabIndex = 10;
-            this.txtNome.TextChanged += new System.EventHandler(this.TxtNome_TextChanged);
             // 
             // label11
             // 
@@ -481,6 +486,26 @@
             this.tmrObjeto2D.Interval = 1;
             this.tmrObjeto2D.Tick += new System.EventHandler(this.TmrObjeto2D_Tick);
             // 
+            // btnVarios
+            // 
+            this.btnVarios.Location = new System.Drawing.Point(165, 31);
+            this.btnVarios.Name = "btnVarios";
+            this.btnVarios.Size = new System.Drawing.Size(75, 23);
+            this.btnVarios.TabIndex = 37;
+            this.btnVarios.Text = "x50";
+            this.btnVarios.UseVisualStyleBackColor = true;
+            this.btnVarios.Click += new System.EventHandler(this.BtnVarios_Click);
+            // 
+            // btnFocarObjeto
+            // 
+            this.btnFocarObjeto.Location = new System.Drawing.Point(193, 19);
+            this.btnFocarObjeto.Name = "btnFocarObjeto";
+            this.btnFocarObjeto.Size = new System.Drawing.Size(44, 21);
+            this.btnFocarObjeto.TabIndex = 35;
+            this.btnFocarObjeto.Text = "Focar";
+            this.btnFocarObjeto.UseVisualStyleBackColor = true;
+            this.btnFocarObjeto.Click += new System.EventHandler(this.BtnFocarObjeto_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -528,7 +553,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblNome;
-        private System.Windows.Forms.TextBox txtNome;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown txtAngulo;
@@ -557,6 +581,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Timer tmrObjeto2D;
+        private System.Windows.Forms.ComboBox cboObjeto2D;
+        private System.Windows.Forms.Button btnVarios;
+        private System.Windows.Forms.Button btnFocarObjeto;
     }
 }
 
