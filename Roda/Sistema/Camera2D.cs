@@ -12,12 +12,13 @@ namespace Engine.Sistema
     public sealed class Camera2D : Objeto2D
     {
         readonly Engine2D engine;
-        Bitmap bmp;
+        Bitmap render;
         Graphics g;
 
         #region Campos
         public int ResWidth;
         public int ResHeigth;
+        public PixelFormat PixelFormat = PixelFormat.Format32bppRgb;
         private int _fps;
         private int _tickFPS;
         #endregion
@@ -28,20 +29,57 @@ namespace Engine.Sistema
         public float Zoom { get; internal set; }
         #endregion
 
+        public Camera2D(Engine2D engine, int width, int height)
+        {
+            this.engine = engine;
+            IniciarCamera(width, height, PixelFormat);
+        }
+
         public Camera2D(Engine2D engine, int width, int height, PixelFormat pixelFormat)
         {
             this.engine = engine;
-            bmp = new Bitmap(width, height, pixelFormat);
-            g = Graphics.FromImage(bmp);
+            IniciarCamera(width, height, pixelFormat);
         }
 
-        public void DefinirResolucao(int width, int height, PixelFormat pixelFormat)
+        private void IniciarCamera(int width, int heigth, PixelFormat pixelFormat)
         {
-            bmp.Dispose();
-            bmp = new Bitmap(width, height, pixelFormat);
+            Nome = "Camera";
+
+            PixelFormat = pixelFormat;
+            ResWidth = width;
+            ResHeigth = heigth;
+            render = new Bitmap(width, heigth, pixelFormat);
+            g = Graphics.FromImage(render);
         }
 
-        #region Atributos de otimização Renderizador
+        public void RedefinirResolucao(int width, int height) => RedefinirResolucao(width, height, PixelFormat);
+
+        public void RedefinirResolucao(int width, int height, PixelFormat pixelFormat)
+        {
+            render.Dispose();
+            PixelFormat = pixelFormat;
+            ResWidth = width;
+            ResHeigth = height;
+            render = new Bitmap(width, height, pixelFormat);
+        }
+
+        public bool Objeto2DVisivel(Objeto2D obj)
+        {
+            float xMax = -(Pos.x - ResWidth / 2) + obj.Pos.x + obj.XMax;
+            float xMin = -(Pos.x - ResWidth / 2) + obj.Pos.x + obj.XMin;
+            float yMax = -(Pos.y - ResHeigth / 2) + obj.Pos.y + obj.YMax;
+            float yMin = -(Pos.y - ResHeigth / 2) + obj.Pos.y + obj.YMin;
+
+            if (xMax >= 0 && xMin <= ResWidth)
+                if (yMax >= 0 && yMin <= ResHeigth)
+                {
+                    return true;
+                }
+
+            return false;
+        }
+
+        #region Atributos de otimização do Renderizador
         Point pontoA = new Point();
         Point pontoB = new Point();
         long _tickRender;
@@ -54,6 +92,7 @@ namespace Engine.Sistema
             TempoDelta = DateTime.Now.Ticks - _tickRender; // Calcula o tempo delta (tempo de atraso)
             _tickRender = DateTime.Now.Ticks;
 
+            g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             // Obtém o fator da câmera conforme sua posição
@@ -62,7 +101,7 @@ namespace Engine.Sistema
             for (int i = 0; i < engine.objetos.Count; i++)
             {
                 Objeto2DRenderizar obj = engine.objetos[i] as Objeto2DRenderizar;
-                if (obj == null || !this.Objeto2DVisivelNaCamera(obj)) continue;
+                if (obj == null || !Objeto2DVisivel(obj)) continue;
 
                 if (obj.Mat_render.CorSolida.A > 0) // Se não transparente...
                 {
@@ -102,7 +141,9 @@ namespace Engine.Sistema
             #region Exibe informações de depuração
             if (engine.Debug)
             {
-                g.DrawString("FPS: " + FPS, font_debug, new SolidBrush(Color.Blue), new Point(10, 10));
+                g.DrawString(Nome, font_debug, new SolidBrush(Color.Blue), new Point(10, 10));
+                g.DrawString("FPS: " + FPS, font_debug, new SolidBrush(Color.Blue), new Point(10, 30));
+                
             }
             #endregion
 
@@ -116,19 +157,7 @@ namespace Engine.Sistema
             else _fps++;
             #endregion
 
-            if (engine.MaximoFPS > 0)
-            {
-                // float teste = MaximoFPS * 1000 / 60000;
-                //long v = DateTime.Now.Ticks - _tickRender;
-
-                //int tick_int = Environment.TickCount;
-                //long tick_long = DateTime.Now.Ticks;
-                //while (DateTime.Now.Ticks - _tickRender < MaximoFPS / 1000) ; // Limita o FPS
-            }
-
-            long tempoGasto = DateTime.Now.Ticks - _tickRender;
-
-            return bmp;
+            return render;
         }
     }
 }

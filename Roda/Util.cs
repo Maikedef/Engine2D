@@ -1,6 +1,7 @@
 ﻿using Engine.Sistema;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,21 +15,7 @@ namespace Engine
             return angulo * (float)Math.PI / 180;
         }
 
-        public static bool Objeto2DVisivelNaCamera(this Camera2D camera, Objeto2D obj)
-        {
-            float xMax = -(camera.Pos.x - camera.ResWidth / 2) + obj.Pos.x + obj.XMax;
-            float xMin = -(camera.Pos.x - camera.ResWidth / 2) + obj.Pos.x + obj.XMin;
-            float yMax = -(camera.Pos.y - camera.ResHeigth / 2) + obj.Pos.y + obj.YMax;
-            float yMin = -(camera.Pos.y - camera.ResHeigth / 2) + obj.Pos.y + obj.YMin;
-
-            if (xMax >= 0 && xMin <= camera.ResWidth)
-                if (yMax >= 0 && yMin <= camera.ResHeigth)
-                {
-                    return true;
-                }
-
-            return false;
-        }
+        
 
         /// <summary>
         /// Obtém o objeto 2d através do espaço. Utilize coordenadas existentes em todo o mapa 2D.
@@ -79,5 +66,7 @@ namespace Engine
             }
             return null;
         }
+
+        
     }
 }

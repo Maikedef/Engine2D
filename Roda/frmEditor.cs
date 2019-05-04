@@ -35,8 +35,7 @@ namespace Roda
         private void Form1_Load(object sender, EventArgs e)
         {
             #region Cria a Câmera
-            Camera2D camera = new Camera2D(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height, PixelFormat.Format32bppRgb);
-            engine2D.AddCamera(camera);
+            engine2D.CriarCamera(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
             #endregion
 
             #region Define os atributos dos controles
@@ -69,65 +68,23 @@ namespace Roda
 
             Show();
 
-            // Bitmap bmp = new Bitmap(camera.width, camera.heigth, g = picScreen.CreateGraphics());
+            // Loop principal de rotinas do simulador 2D
+            while (!_sair)
+            {
+                // Use o tempo delta em todos os cálculos que alteram o comportamento dos objetos 2d
+                // para que rode em processadores de baixo e alto desempenho sem alterar a qualidade do simulador
 
-            //Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            //BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
-            //bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
-            // g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                // TODO: Insira toda sua rotina aqui
 
-            //Bitmap bmp = new Bitmap(camera.ResWidth, camera.ResHeigth, PixelFormat.Format16bppRgb555);
-
-            //using (Graphics g = Graphics.FromImage(bmp))
-            //{
-            //    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-            //    Rectangle rect = new Rectangle(0, 0, 50, 50);
-            //    g.FillEllipse(Brushes.LightGreen, rect);
-            //    using (Pen thick_pen = new Pen(Color.Black, 5))
-            //    {
-            //        g.DrawEllipse(thick_pen, rect);
-            //    }
-
-            //    Point point = new Point();
-
-                int tick = Environment.TickCount;
-                int fps = 0;
-
-                // Loop principal de rotinas do simulador 2D
-                while (!_sair)
+                if (moveCamera)
                 {
-                    // Use o tempo delta em todos os cálculos que alteram o comportamento dos objetos 2d
-                    // para que rode em processadores de baixo e alto desempenho sem alterar a qualidade do simulador
-
-                    // TODO: Insira toda sua rotina aqui
-
-                    if (moveCamera)
-                    {
-                        engine2D.Camera.Pos.x += -(float)((cameraDrag.X - Cursor.Position.X) * engine2D.TempoDelta * 0.000001);
-                        engine2D.Camera.Pos.y += -(float)((cameraDrag.Y - Cursor.Position.Y) * engine2D.TempoDelta * 0.000001);
-                    }
-
-                    #region FPS
-                    if (Environment.TickCount - tick >= 1000)
-                    {
-                        Text = fps.ToString();
-                        tick = Environment.TickCount;
-                        fps = 0;
-                    }
-                    else fps++;
-                    #endregion
-
-                    #region Renderização
-                    //picScreen.Invalidate();
-                    //engine2D.Camera.g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    //engine2D.Render(engine2D.Camera);
-
-                    picScreen.Image = engine2D.Camera.Renderizar();
-                    Application.DoEvents();
-                    #endregion
+                    engine2D.Camera.Pos.x += -(float)((cameraDrag.X - Cursor.Position.X) * engine2D.Camera.TempoDelta * 0.000001);
+                    engine2D.Camera.Pos.y += -(float)((cameraDrag.Y - Cursor.Position.Y) * engine2D.Camera.TempoDelta * 0.000001);
                 }
-            //}
+
+                picScreen.Image = engine2D.Camera.Renderizar();
+                Application.DoEvents();
+            }
         }
 
         private void AtualizarControles(Objeto2D obj)
@@ -204,6 +161,10 @@ namespace Roda
         {
             Quadrado quadrado = new Quadrado();
             quadrado.Pos = PosAleatorio();
+            var rnd = new Random(Environment.TickCount);
+            quadrado.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            quadrado.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+
             quadrado.GerarGeometria(45, raio_padrao);
             engine2D.AddObjeto(obj_selecionado = quadrado);
             AtualizarControles(obj_selecionado);
@@ -213,6 +174,10 @@ namespace Roda
         {
             Circulo circulo = new Circulo();
             circulo.Pos = PosAleatorio();
+            var rnd = new Random(Environment.TickCount);
+            circulo.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            circulo.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+
             circulo.GerarGeometria(0, raio_padrao);
             engine2D.AddObjeto(obj_selecionado = circulo);
             AtualizarControles(obj_selecionado);
@@ -222,6 +187,11 @@ namespace Roda
         {
             Triangulo triangulo = new Triangulo();
             triangulo.Pos = PosAleatorio();
+
+            var rnd = new Random(Environment.TickCount);
+            triangulo.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            triangulo.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+
             triangulo.GerarGeometria(0, raio_padrao);
             engine2D.AddObjeto(obj_selecionado = triangulo);
             AtualizarControles(obj_selecionado);
@@ -231,6 +201,10 @@ namespace Roda
         {
             Pentagono pentagono = new Pentagono();
             pentagono.Pos = PosAleatorio();
+            var rnd = new Random(Environment.TickCount);
+            pentagono.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            pentagono.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+
             pentagono.GerarGeometria(0, raio_padrao);
             engine2D.AddObjeto(obj_selecionado = pentagono);
             AtualizarControles(obj_selecionado);
@@ -337,8 +311,12 @@ namespace Roda
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            engine2D.Camera.ResWidth = picScreen.ClientRectangle.Width;
-            engine2D.Camera.ResHeigth = picScreen.ClientRectangle.Height;
+            engine2D.Camera.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
+
+            //engine2D.Cameras.ToList().ForEach(cam => 
+            //{
+            //    cam.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
+            //});
         }
 
         private void TxtEscalaY_ValueChanged(object sender, EventArgs e)
@@ -373,7 +351,7 @@ namespace Roda
             
             if (obj_selecionado != null)
             {
-                if (Util.Objeto2DVisivelNaCamera(engine2D.Camera, obj_selecionado))
+                if (engine2D.Camera.Objeto2DVisivel(obj_selecionado))
                     txtVisivel.Text = "True";
                 else
                     txtVisivel.Text = "False";
@@ -456,9 +434,8 @@ namespace Roda
         private void BtnNovaCamera_Click(object sender, EventArgs e)
         {
             #region Cria a Câmera 2D
-            Camera2D camera = new Camera2D(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height, PixelFormat.Format32bppRgb);
+            Camera2D camera = engine2D.CriarCamera(picScreen.Width, picScreen.Height, PixelFormat.Format32bppRgb);
             camera.Pos = new Vetor2D(obj_selecionado.Pos.x, obj_selecionado.Pos.y);
-            engine2D.AddCamera(camera);
             #endregion
 
             cboCamera.DataSource = engine2D.Cameras
@@ -481,8 +458,11 @@ namespace Roda
         {
             Quadrilatero quadrilatero = new Quadrilatero();
             quadrilatero.Pos = PosAleatorio();
-            quadrilatero.GerarGeometria(0, raio_padrao, (int)(raio_padrao * 1.5F));
+            var rnd = new Random(Environment.TickCount);
+            quadrilatero.Mat_render.CorBorda = new RGBA(255, (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            quadrilatero.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
 
+            quadrilatero.GerarGeometria(0, raio_padrao, (int)(raio_padrao * 1.5F));
             engine2D.AddObjeto(obj_selecionado = quadrilatero);
             AtualizarControles(obj_selecionado);
         }
@@ -494,7 +474,6 @@ namespace Roda
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            picScreen.Invalidate();
         }
     }
 }

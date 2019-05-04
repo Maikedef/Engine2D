@@ -41,6 +41,7 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.tabModelagem = new System.Windows.Forms.TabControl();
             this.tabPrimitivos = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnQuadrilatero = new System.Windows.Forms.Button();
             this.btnVarios = new System.Windows.Forms.Button();
             this.tabDesenho = new System.Windows.Forms.TabPage();
@@ -90,7 +91,6 @@
             this.telaCheiaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fPSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -254,6 +254,16 @@
             this.tabPrimitivos.TabIndex = 0;
             this.tabPrimitivos.Text = "Primitivos";
             this.tabPrimitivos.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(155, 35);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 39;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // btnQuadrilatero
             // 
@@ -722,16 +732,6 @@
             this.fPSToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.fPSToolStripMenuItem.Text = "FPS";
             this.fPSToolStripMenuItem.Click += new System.EventHandler(this.FPSToolStripMenuItem_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(120, 46);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 39;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // Form1
             // 
