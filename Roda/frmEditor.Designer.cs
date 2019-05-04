@@ -38,11 +38,25 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.tabModelagem = new System.Windows.Forms.TabControl();
+            this.tabPrimitivos = new System.Windows.Forms.TabPage();
+            this.btnQuadrilatero = new System.Windows.Forms.Button();
+            this.btnVarios = new System.Windows.Forms.Button();
+            this.tabDesenho = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.trackLinhaDoTempoAnimacao = new System.Windows.Forms.TrackBar();
+            this.label14 = new System.Windows.Forms.Label();
+            this.cboEfeitoAnimacao = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.cboTipoAnimacao = new System.Windows.Forms.ComboBox();
+            this.cboAnimacao = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnFocarObjeto = new System.Windows.Forms.Button();
             this.cboObjeto2D = new System.Windows.Forms.ComboBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.txtEscalaX = new System.Windows.Forms.NumericUpDown();
@@ -58,6 +72,9 @@
             this.txtPosY = new System.Windows.Forms.NumericUpDown();
             this.txtPosX = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnNovaCamera = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cboCamera = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtCamAngulo = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
@@ -66,13 +83,22 @@
             this.txtCamPosX = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.txtCamPosY = new System.Windows.Forms.NumericUpDown();
-            this.chkDebug = new System.Windows.Forms.CheckBox();
+            this.pnScreen = new System.Windows.Forms.Panel();
             this.tmrObjeto2D = new System.Windows.Forms.Timer(this.components);
-            this.btnVarios = new System.Windows.Forms.Button();
-            this.btnFocarObjeto = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.telaInteiraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.telaCheiaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fPSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.tabModelagem.SuspendLayout();
+            this.tabPrimitivos.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackLinhaDoTempoAnimacao)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -87,11 +113,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtCamZoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCamPosX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCamPosY)).BeginInit();
+            this.pnScreen.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTriangulo
             // 
-            this.btnTriangulo.Location = new System.Drawing.Point(165, 3);
+            this.btnTriangulo.Location = new System.Drawing.Point(6, 52);
             this.btnTriangulo.Name = "btnTriangulo";
             this.btnTriangulo.Size = new System.Drawing.Size(75, 23);
             this.btnTriangulo.TabIndex = 5;
@@ -101,7 +129,7 @@
             // 
             // btnPentagono
             // 
-            this.btnPentagono.Location = new System.Drawing.Point(3, 32);
+            this.btnPentagono.Location = new System.Drawing.Point(6, 75);
             this.btnPentagono.Name = "btnPentagono";
             this.btnPentagono.Size = new System.Drawing.Size(75, 23);
             this.btnPentagono.TabIndex = 4;
@@ -111,7 +139,7 @@
             // 
             // btnCirculo
             // 
-            this.btnCirculo.Location = new System.Drawing.Point(84, 3);
+            this.btnCirculo.Location = new System.Drawing.Point(6, 29);
             this.btnCirculo.Name = "btnCirculo";
             this.btnCirculo.Size = new System.Drawing.Size(75, 23);
             this.btnCirculo.TabIndex = 3;
@@ -121,7 +149,7 @@
             // 
             // btnQuadrado
             // 
-            this.btnQuadrado.Location = new System.Drawing.Point(3, 3);
+            this.btnQuadrado.Location = new System.Drawing.Point(6, 6);
             this.btnQuadrado.Name = "btnQuadrado";
             this.btnQuadrado.Size = new System.Drawing.Size(75, 23);
             this.btnQuadrado.TabIndex = 2;
@@ -134,12 +162,12 @@
             this.picScreen.BackColor = System.Drawing.Color.White;
             this.picScreen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picScreen.Location = new System.Drawing.Point(303, 3);
+            this.picScreen.Location = new System.Drawing.Point(0, 0);
             this.picScreen.Name = "picScreen";
-            this.picScreen.Size = new System.Drawing.Size(552, 520);
+            this.picScreen.Size = new System.Drawing.Size(552, 496);
             this.picScreen.TabIndex = 2;
             this.picScreen.TabStop = false;
-            this.picScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.PicDesign_Paint);
+            this.picScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.PicScreen_Paint);
             this.picScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseDown);
             this.picScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseMove);
             // 
@@ -167,48 +195,175 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.picScreen, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pnScreen, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 24);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 526);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 502);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.btnVarios);
+            this.panel1.Controls.Add(this.groupBox5);
             this.panel1.Controls.Add(this.groupBox4);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Controls.Add(this.chkDebug);
-            this.panel1.Controls.Add(this.btnQuadrado);
-            this.panel1.Controls.Add(this.btnCirculo);
-            this.panel1.Controls.Add(this.btnTriangulo);
-            this.panel1.Controls.Add(this.btnPentagono);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(294, 520);
+            this.panel1.Size = new System.Drawing.Size(294, 496);
             this.panel1.TabIndex = 0;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.tabModelagem);
+            this.groupBox5.Location = new System.Drawing.Point(9, 9);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(256, 175);
+            this.groupBox5.TabIndex = 38;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Modelagem";
+            // 
+            // tabModelagem
+            // 
+            this.tabModelagem.Controls.Add(this.tabPrimitivos);
+            this.tabModelagem.Controls.Add(this.tabDesenho);
+            this.tabModelagem.Location = new System.Drawing.Point(6, 19);
+            this.tabModelagem.Name = "tabModelagem";
+            this.tabModelagem.SelectedIndex = 0;
+            this.tabModelagem.Size = new System.Drawing.Size(244, 150);
+            this.tabModelagem.TabIndex = 0;
+            // 
+            // tabPrimitivos
+            // 
+            this.tabPrimitivos.Controls.Add(this.button1);
+            this.tabPrimitivos.Controls.Add(this.btnQuadrilatero);
+            this.tabPrimitivos.Controls.Add(this.btnQuadrado);
+            this.tabPrimitivos.Controls.Add(this.btnVarios);
+            this.tabPrimitivos.Controls.Add(this.btnCirculo);
+            this.tabPrimitivos.Controls.Add(this.btnTriangulo);
+            this.tabPrimitivos.Controls.Add(this.btnPentagono);
+            this.tabPrimitivos.Location = new System.Drawing.Point(4, 22);
+            this.tabPrimitivos.Name = "tabPrimitivos";
+            this.tabPrimitivos.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPrimitivos.Size = new System.Drawing.Size(236, 124);
+            this.tabPrimitivos.TabIndex = 0;
+            this.tabPrimitivos.Text = "Primitivos";
+            this.tabPrimitivos.UseVisualStyleBackColor = true;
+            // 
+            // btnQuadrilatero
+            // 
+            this.btnQuadrilatero.Location = new System.Drawing.Point(87, 75);
+            this.btnQuadrilatero.Name = "btnQuadrilatero";
+            this.btnQuadrilatero.Size = new System.Drawing.Size(75, 23);
+            this.btnQuadrilatero.TabIndex = 38;
+            this.btnQuadrilatero.Text = "Quadrilátero";
+            this.btnQuadrilatero.UseVisualStyleBackColor = true;
+            this.btnQuadrilatero.Click += new System.EventHandler(this.BtnQuadrilatero_Click);
+            // 
+            // btnVarios
+            // 
+            this.btnVarios.Location = new System.Drawing.Point(155, 6);
+            this.btnVarios.Name = "btnVarios";
+            this.btnVarios.Size = new System.Drawing.Size(75, 23);
+            this.btnVarios.TabIndex = 37;
+            this.btnVarios.Text = "x50";
+            this.btnVarios.UseVisualStyleBackColor = true;
+            this.btnVarios.Click += new System.EventHandler(this.BtnVarios_Click);
+            // 
+            // tabDesenho
+            // 
+            this.tabDesenho.Location = new System.Drawing.Point(4, 22);
+            this.tabDesenho.Name = "tabDesenho";
+            this.tabDesenho.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDesenho.Size = new System.Drawing.Size(236, 124);
+            this.tabDesenho.TabIndex = 1;
+            this.tabDesenho.Text = "Desenho";
+            this.tabDesenho.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
-            this.groupBox4.Location = new System.Drawing.Point(9, 481);
+            this.groupBox4.Controls.Add(this.label15);
+            this.groupBox4.Controls.Add(this.trackLinhaDoTempoAnimacao);
+            this.groupBox4.Controls.Add(this.label14);
+            this.groupBox4.Controls.Add(this.cboEfeitoAnimacao);
+            this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.Controls.Add(this.cboTipoAnimacao);
+            this.groupBox4.Controls.Add(this.cboAnimacao);
+            this.groupBox4.Location = new System.Drawing.Point(9, 618);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(256, 100);
+            this.groupBox4.Size = new System.Drawing.Size(256, 379);
             this.groupBox4.TabIndex = 36;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Animação:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 160);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(83, 13);
+            this.label15.TabIndex = 6;
+            this.label15.Text = "Linha do tempo:";
+            // 
+            // trackLinhaDoTempoAnimacao
+            // 
+            this.trackLinhaDoTempoAnimacao.Location = new System.Drawing.Point(9, 185);
+            this.trackLinhaDoTempoAnimacao.Name = "trackLinhaDoTempoAnimacao";
+            this.trackLinhaDoTempoAnimacao.Size = new System.Drawing.Size(228, 45);
+            this.trackLinhaDoTempoAnimacao.TabIndex = 5;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 103);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(37, 13);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "Efeito:";
+            // 
+            // cboEfeitoAnimacao
+            // 
+            this.cboEfeitoAnimacao.FormattingEnabled = true;
+            this.cboEfeitoAnimacao.Location = new System.Drawing.Point(9, 119);
+            this.cboEfeitoAnimacao.Name = "cboEfeitoAnimacao";
+            this.cboEfeitoAnimacao.Size = new System.Drawing.Size(228, 21);
+            this.cboEfeitoAnimacao.TabIndex = 3;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 53);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(31, 13);
+            this.label13.TabIndex = 2;
+            this.label13.Text = "Tipo:";
+            // 
+            // cboTipoAnimacao
+            // 
+            this.cboTipoAnimacao.FormattingEnabled = true;
+            this.cboTipoAnimacao.Location = new System.Drawing.Point(9, 69);
+            this.cboTipoAnimacao.Name = "cboTipoAnimacao";
+            this.cboTipoAnimacao.Size = new System.Drawing.Size(228, 21);
+            this.cboTipoAnimacao.TabIndex = 1;
+            // 
+            // cboAnimacao
+            // 
+            this.cboAnimacao.FormattingEnabled = true;
+            this.cboAnimacao.Location = new System.Drawing.Point(9, 19);
+            this.cboAnimacao.Name = "cboAnimacao";
+            this.cboAnimacao.Size = new System.Drawing.Size(228, 21);
+            this.cboAnimacao.TabIndex = 0;
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.numericUpDown1);
-            this.groupBox3.Location = new System.Drawing.Point(9, 375);
+            this.groupBox3.Location = new System.Drawing.Point(9, 512);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(256, 100);
             this.groupBox3.TabIndex = 35;
@@ -250,12 +405,22 @@
             this.groupBox2.Controls.Add(this.txtRaio);
             this.groupBox2.Controls.Add(this.txtPosY);
             this.groupBox2.Controls.Add(this.txtPosX);
-            this.groupBox2.Location = new System.Drawing.Point(9, 180);
+            this.groupBox2.Location = new System.Drawing.Point(9, 317);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(256, 189);
             this.groupBox2.TabIndex = 34;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Objeto 2D";
+            // 
+            // btnFocarObjeto
+            // 
+            this.btnFocarObjeto.Location = new System.Drawing.Point(193, 19);
+            this.btnFocarObjeto.Name = "btnFocarObjeto";
+            this.btnFocarObjeto.Size = new System.Drawing.Size(44, 21);
+            this.btnFocarObjeto.TabIndex = 35;
+            this.btnFocarObjeto.Text = "Focar";
+            this.btnFocarObjeto.UseVisualStyleBackColor = true;
+            this.btnFocarObjeto.Click += new System.EventHandler(this.BtnFocarObjeto_Click);
             // 
             // cboObjeto2D
             // 
@@ -378,6 +543,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnNovaCamera);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.cboCamera);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.txtCamAngulo);
             this.groupBox1.Controls.Add(this.label8);
@@ -386,17 +554,45 @@
             this.groupBox1.Controls.Add(this.txtCamPosX);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.txtCamPosY);
-            this.groupBox1.Location = new System.Drawing.Point(9, 74);
+            this.groupBox1.Location = new System.Drawing.Point(9, 190);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(256, 100);
+            this.groupBox1.Size = new System.Drawing.Size(256, 121);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Câmera:";
             // 
+            // btnNovaCamera
+            // 
+            this.btnNovaCamera.Location = new System.Drawing.Point(193, 19);
+            this.btnNovaCamera.Name = "btnNovaCamera";
+            this.btnNovaCamera.Size = new System.Drawing.Size(44, 21);
+            this.btnNovaCamera.TabIndex = 37;
+            this.btnNovaCamera.Text = "Novo";
+            this.btnNovaCamera.UseVisualStyleBackColor = true;
+            this.btnNovaCamera.Click += new System.EventHandler(this.BtnNovaCamera_Click);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(7, 22);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(31, 13);
+            this.label16.TabIndex = 36;
+            this.label16.Text = "Cam:";
+            // 
+            // cboCamera
+            // 
+            this.cboCamera.FormattingEnabled = true;
+            this.cboCamera.Location = new System.Drawing.Point(55, 19);
+            this.cboCamera.Name = "cboCamera";
+            this.cboCamera.Size = new System.Drawing.Size(132, 21);
+            this.cboCamera.TabIndex = 35;
+            this.cboCamera.SelectedValueChanged += new System.EventHandler(this.CboCamera_SelectedValueChanged);
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 46);
+            this.label9.Location = new System.Drawing.Point(6, 83);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(43, 13);
             this.label9.TabIndex = 29;
@@ -404,7 +600,7 @@
             // 
             // txtCamAngulo
             // 
-            this.txtCamAngulo.Location = new System.Drawing.Point(55, 44);
+            this.txtCamAngulo.Location = new System.Drawing.Point(55, 81);
             this.txtCamAngulo.Name = "txtCamAngulo";
             this.txtCamAngulo.Size = new System.Drawing.Size(59, 20);
             this.txtCamAngulo.TabIndex = 30;
@@ -412,7 +608,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(125, 46);
+            this.label8.Location = new System.Drawing.Point(135, 83);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(37, 13);
             this.label8.TabIndex = 27;
@@ -420,7 +616,7 @@
             // 
             // txtCamZoom
             // 
-            this.txtCamZoom.Location = new System.Drawing.Point(166, 44);
+            this.txtCamZoom.Location = new System.Drawing.Point(178, 81);
             this.txtCamZoom.Name = "txtCamZoom";
             this.txtCamZoom.Size = new System.Drawing.Size(59, 20);
             this.txtCamZoom.TabIndex = 28;
@@ -428,7 +624,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 20);
+            this.label7.Location = new System.Drawing.Point(6, 57);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(35, 13);
             this.label7.TabIndex = 23;
@@ -441,7 +637,7 @@
             0,
             0,
             0});
-            this.txtCamPosX.Location = new System.Drawing.Point(55, 18);
+            this.txtCamPosX.Location = new System.Drawing.Point(55, 55);
             this.txtCamPosX.Name = "txtCamPosX";
             this.txtCamPosX.Size = new System.Drawing.Size(59, 20);
             this.txtCamPosX.TabIndex = 26;
@@ -450,7 +646,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(125, 20);
+            this.label6.Location = new System.Drawing.Point(137, 55);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 24;
@@ -463,22 +659,20 @@
             0,
             0,
             0});
-            this.txtCamPosY.Location = new System.Drawing.Point(166, 18);
+            this.txtCamPosY.Location = new System.Drawing.Point(178, 55);
             this.txtCamPosY.Name = "txtCamPosY";
             this.txtCamPosY.Size = new System.Drawing.Size(59, 20);
             this.txtCamPosY.TabIndex = 25;
             this.txtCamPosY.ValueChanged += new System.EventHandler(this.TxtCamPosY_ValueChanged);
             // 
-            // chkDebug
+            // pnScreen
             // 
-            this.chkDebug.AutoSize = true;
-            this.chkDebug.Location = new System.Drawing.Point(99, 38);
-            this.chkDebug.Name = "chkDebug";
-            this.chkDebug.Size = new System.Drawing.Size(58, 17);
-            this.chkDebug.TabIndex = 22;
-            this.chkDebug.Text = "Debug";
-            this.chkDebug.UseVisualStyleBackColor = true;
-            this.chkDebug.CheckedChanged += new System.EventHandler(this.ChkDebug_CheckedChanged);
+            this.pnScreen.Controls.Add(this.picScreen);
+            this.pnScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnScreen.Location = new System.Drawing.Point(303, 3);
+            this.pnScreen.Name = "pnScreen";
+            this.pnScreen.Size = new System.Drawing.Size(552, 496);
+            this.pnScreen.TabIndex = 1;
             // 
             // tmrObjeto2D
             // 
@@ -486,25 +680,58 @@
             this.tmrObjeto2D.Interval = 1;
             this.tmrObjeto2D.Tick += new System.EventHandler(this.TmrObjeto2D_Tick);
             // 
-            // btnVarios
+            // menuStrip1
             // 
-            this.btnVarios.Location = new System.Drawing.Point(165, 31);
-            this.btnVarios.Name = "btnVarios";
-            this.btnVarios.Size = new System.Drawing.Size(75, 23);
-            this.btnVarios.TabIndex = 37;
-            this.btnVarios.Text = "x50";
-            this.btnVarios.UseVisualStyleBackColor = true;
-            this.btnVarios.Click += new System.EventHandler(this.BtnVarios_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.telaInteiraToolStripMenuItem,
+            this.debugToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(858, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // btnFocarObjeto
+            // telaInteiraToolStripMenuItem
             // 
-            this.btnFocarObjeto.Location = new System.Drawing.Point(193, 19);
-            this.btnFocarObjeto.Name = "btnFocarObjeto";
-            this.btnFocarObjeto.Size = new System.Drawing.Size(44, 21);
-            this.btnFocarObjeto.TabIndex = 35;
-            this.btnFocarObjeto.Text = "Focar";
-            this.btnFocarObjeto.UseVisualStyleBackColor = true;
-            this.btnFocarObjeto.Click += new System.EventHandler(this.BtnFocarObjeto_Click);
+            this.telaInteiraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.telaCheiaToolStripMenuItem});
+            this.telaInteiraToolStripMenuItem.Name = "telaInteiraToolStripMenuItem";
+            this.telaInteiraToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.telaInteiraToolStripMenuItem.Text = "Opções";
+            // 
+            // telaCheiaToolStripMenuItem
+            // 
+            this.telaCheiaToolStripMenuItem.Name = "telaCheiaToolStripMenuItem";
+            this.telaCheiaToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.telaCheiaToolStripMenuItem.Text = "Tela Cheia";
+            this.telaCheiaToolStripMenuItem.Click += new System.EventHandler(this.TelaCheiaToolStripMenuItem_Click);
+            // 
+            // debugToolStripMenuItem
+            // 
+            this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fPSToolStripMenuItem});
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.debugToolStripMenuItem.Text = "Debug";
+            // 
+            // fPSToolStripMenuItem
+            // 
+            this.fPSToolStripMenuItem.Checked = true;
+            this.fPSToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.fPSToolStripMenuItem.Name = "fPSToolStripMenuItem";
+            this.fPSToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.fPSToolStripMenuItem.Text = "FPS";
+            this.fPSToolStripMenuItem.Click += new System.EventHandler(this.FPSToolStripMenuItem_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(120, 46);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 39;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // Form1
             // 
@@ -512,15 +739,24 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(858, 526);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.tabModelagem.ResumeLayout(false);
+            this.tabPrimitivos.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackLinhaDoTempoAnimacao)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -538,7 +774,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtCamZoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCamPosX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCamPosY)).EndInit();
+            this.pnScreen.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -561,7 +801,6 @@
         private System.Windows.Forms.NumericUpDown txtPosX;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox chkDebug;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown txtCamPosX;
@@ -584,6 +823,28 @@
         private System.Windows.Forms.ComboBox cboObjeto2D;
         private System.Windows.Forms.Button btnVarios;
         private System.Windows.Forms.Button btnFocarObjeto;
+        private System.Windows.Forms.ComboBox cboAnimacao;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox cboTipoAnimacao;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cboEfeitoAnimacao;
+        private System.Windows.Forms.TrackBar trackLinhaDoTempoAnimacao;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel pnScreen;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem telaInteiraToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem telaCheiaToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TabControl tabModelagem;
+        private System.Windows.Forms.TabPage tabPrimitivos;
+        private System.Windows.Forms.TabPage tabDesenho;
+        private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fPSToolStripMenuItem;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox cboCamera;
+        private System.Windows.Forms.Button btnNovaCamera;
+        private System.Windows.Forms.Button btnQuadrilatero;
+        private System.Windows.Forms.Button button1;
     }
 }
 

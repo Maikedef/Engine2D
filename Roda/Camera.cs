@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Engine
 {
-    public class Camera
+    public class Camerar
     {
-        public List<Animacao> animacoes = new List<Animacao>();
+        public int id { get; set; }
+        public string Nome { get; set; } = "Camera";
+        public Graphics g { get; set; }
+
+        public List<Animacao2D> animacoes = new List<Animacao2D>();
 
         /// <summary>Posição da Câmera no espaço</summary>
         public Vetor2D pos = new Vetor2D();
@@ -26,7 +31,7 @@ namespace Engine
         /// <summary>Proporção de tela</summary>
         public float AspectRatio = 0F;
 
-        public Camera(int width, int heigth)
+        public Camerar(int width, int heigth)
         {
             this.pos = new Vetor2D(0, 0);
             this.width = width;

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine
+namespace Engine.Colisao
 {
-    public class Animacao
+    public abstract class Colisor
     {
 
     }

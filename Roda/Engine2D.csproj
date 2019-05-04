@@ -49,18 +49,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animacao.cs" />
+    <Compile Include="Sistema\Animacao2D.cs" />
+    <Compile Include="Objetos2D\Avancados\Estrela.cs" />
+    <Compile Include="Objetos2D\Avancados\Quadrilatero.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Colisao\Colisor.cs" />
     <Compile Include="frmEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmEditor.Designer.cs">
       <DependentUpon>frmEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Objeto2D.cs" />
+    <Compile Include="Objeto2Ds.cs" />
+    <Compile Include="Objetos2D\Primitivos\Circulo.cs" />
+    <Compile Include="Objetos2D\Primitivos\Pentagono.cs" />
+    <Compile Include="Objetos2D\Primitivos\Quadrado.cs" />
+    <Compile Include="Objetos2D\Primitivos\Triangulo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Engine2D.cs" />
+    <Compile Include="Sistema\Avancado2D.cs" />
+    <Compile Include="Sistema\Camera2D.cs" />
+    <Compile Include="Sistema\Cores.cs" />
+    <Compile Include="Sistema\Entrada\Joystick.cs" />
+    <Compile Include="Sistema\Entrada\Mouse.cs" />
+    <Compile Include="Sistema\Entrada\Teclado.cs" />
+    <Compile Include="Sistema\Material.cs" />
+    <Compile Include="Sistema\Objeto2D.cs" />
+    <Compile Include="Sistema\Objeto2DRenderizar.cs" />
+    <Compile Include="Sistema\Pivo2D.cs" />
+    <Compile Include="Sistema\Primitivo2D.cs" />
+    <Compile Include="Util.cs" />
     <EmbeddedResource Include="frmEditor.resx">
       <DependentUpon>frmEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -88,5 +107,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
