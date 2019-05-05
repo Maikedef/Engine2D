@@ -94,6 +94,7 @@
             this.tabControles = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.tabAvancado = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -235,6 +236,7 @@
             // tabModelagem
             // 
             this.tabModelagem.Controls.Add(this.tabPrimitivos);
+            this.tabModelagem.Controls.Add(this.tabAvancado);
             this.tabModelagem.Controls.Add(this.tabDesenho);
             this.tabModelagem.Controls.Add(this.tabControles);
             this.tabModelagem.Location = new System.Drawing.Point(6, 19);
@@ -774,6 +776,16 @@
             this.button3.Text = "TextBox";
             this.button3.UseVisualStyleBackColor = true;
             // 
+            // tabAvancado
+            // 
+            this.tabAvancado.Location = new System.Drawing.Point(4, 22);
+            this.tabAvancado.Name = "tabAvancado";
+            this.tabAvancado.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAvancado.Size = new System.Drawing.Size(236, 124);
+            this.tabAvancado.TabIndex = 3;
+            this.tabAvancado.Text = "Avançado";
+            this.tabAvancado.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -890,6 +902,7 @@
         private System.Windows.Forms.TabPage tabControles;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TabPage tabAvancado;
     }
 }
 
