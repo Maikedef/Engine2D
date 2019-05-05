@@ -176,6 +176,7 @@
             this.picScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.PicScreen_Paint);
             this.picScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseDown);
             this.picScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseMove);
+            this.picScreen.Resize += new System.EventHandler(this.PicScreen_Resize);
             // 
             // label1
             // 
@@ -812,6 +813,8 @@
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.ResizeBegin += new System.EventHandler(this.Form1_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).EndInit();

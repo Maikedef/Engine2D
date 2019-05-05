@@ -20,6 +20,7 @@ namespace Roda
     public partial class Form1 : Form
     {
         bool _sair = false;
+        bool _resize = false;
         readonly int raio_padrao = 50;
 
         Engine2D engine2D = new Engine2D();
@@ -63,6 +64,9 @@ namespace Roda
             #region  Loop principal de rotinas do simulador 2D
             while (!_sair)
             {
+                
+
+
                 // Use o tempo delta em todos os cálculos que alteram o comportamento dos objetos 2d
                 // para que rode em processadores de baixo e alto desempenho sem alterar a qualidade do simulador
 
@@ -72,6 +76,12 @@ namespace Roda
                 {
                     engine2D.Camera.Pos.x += -(float)((cameraDrag.X - Cursor.Position.X) * engine2D.Camera.TempoDelta * 0.000001);
                     engine2D.Camera.Pos.y += -(float)((cameraDrag.Y - Cursor.Position.Y) * engine2D.Camera.TempoDelta * 0.000001);
+                }
+
+                if (engine2D.Camera.ResWidth != picScreen.ClientRectangle.Width ||
+                    engine2D.Camera.ResHeigth != picScreen.ClientRectangle.Height)
+                {
+                    engine2D.Camera.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
                 }
 
                 picScreen.Image = engine2D.Camera.Renderizar();
@@ -309,12 +319,7 @@ namespace Roda
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            engine2D.Camera.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
-
-            //engine2D.Cameras.ToList().ForEach(cam => 
-            //{
-            //    cam.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
-            //});
+            
         }
 
         private void TxtEscalaY_ValueChanged(object sender, EventArgs e)
@@ -501,6 +506,24 @@ namespace Roda
 
         private void Form1_Activated(object sender, EventArgs e)
         {
+            
+        }
+
+        private void Form1_ResizeBegin(object sender, EventArgs e)
+        {
+            _resize = true;
+
+            
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            _resize = false;
+        }
+
+        private void PicScreen_Resize(object sender, EventArgs e)
+        {
+
             
         }
     }

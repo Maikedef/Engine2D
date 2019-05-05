@@ -162,15 +162,13 @@ namespace Engine.Sistema
                     Objeto2DRenderizar obj = engine.objetos[i] as Objeto2DRenderizar;
                     if (obj == null) continue;
 
-                    //obj = (Objeto2DRenderizar)obj.Clone();
-
                     #region ZOOM
                     if (!DesligarSistemaZoom)
                     {
+                        obj = (Objeto2DRenderizar)obj.Clone();
                         Objeto2D objZoom = ZoomEscalaObjeto2D(obj, ZoomCamera);
                         Objeto2D objPosZoom = ZoomPosObjeto2D(obj, ZoomCamera);
                         objZoom.Pos = objPosZoom.Pos;
-                        obj = (Objeto2DRenderizar)objZoom;
                     }
                     #endregion
 
