@@ -25,8 +25,10 @@ namespace Engine.Sistema
 
         #region Propriedades
         public int FPS { get; private set; }
+        private int _maxFPS { get; set; } = 60;
+        private float _TickFPSConstante { get; set; }
         public long TempoDelta { get; private set; }
-        public float Zoom { get; internal set; }
+        public float ZoomCamera { get; set; } = 1F;
         #endregion
 
         public Camera2D(Engine2D engine, int width, int height)
@@ -43,6 +45,8 @@ namespace Engine.Sistema
 
         private void IniciarCamera(int width, int heigth, PixelFormat pixelFormat)
         {
+            DefineMaxFPS(_maxFPS);
+
             Nome = "Camera";
 
             PixelFormat = pixelFormat;
@@ -61,6 +65,27 @@ namespace Engine.Sistema
             ResWidth = width;
             ResHeigth = height;
             render = new Bitmap(width, height, pixelFormat);
+        }
+        public void DefineMaxFPS(int maxFPS)
+        {
+            this._maxFPS = maxFPS;
+            this._TickFPSConstante = 1000 / maxFPS;
+        }
+
+        /// <summary>
+        /// Infrementa Zoom na camera
+        /// </summary>
+        public void Zoom(float valor)
+        {
+            this.ZoomCamera += valor;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void DefinirZoom(float zoom)
+        {
+            ZoomCamera = zoom;
         }
 
         public bool Objeto2DVisivel(Objeto2D obj)
@@ -84,7 +109,7 @@ namespace Engine.Sistema
         Point pontoB = new Point();
         long _tickRender;
         Pen pen = new Pen(new SolidBrush(Color.Black), 1);
-        readonly Font font_debug = new Font("Times New Roman", 12, FontStyle.Regular, GraphicsUnit.Pixel);
+        readonly Font font_debug = new Font("Lucida Console", 12, FontStyle.Regular, GraphicsUnit.Pixel);
         #endregion
 
         public Bitmap Renderizar()
@@ -96,19 +121,23 @@ namespace Engine.Sistema
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             // Obtém o fator da câmera conforme sua posição
+
             Point fatorCam = new Point((int)Pos.x - ResWidth / 2, (int)Pos.y - ResHeigth / 2);
 
             for (int i = 0; i < engine.objetos.Count; i++)
             {
                 Objeto2DRenderizar obj = engine.objetos[i] as Objeto2DRenderizar;
-                if (obj == null || !Objeto2DVisivel(obj)) continue;
+                if (obj == null) continue;
+
+                Objeto2D objZoom = ZoomObjeto2D(Pos, obj, ZoomCamera);
+                if (!Objeto2DVisivel(objZoom)) continue;
 
                 if (obj.Mat_render.CorSolida.A > 0) // Se não transparente...
                 {
                     GraphicsPath preenche = new GraphicsPath(FillMode.Alternate);
-                    preenche.AddLines(obj.Vertices.ToList().Select(ponto => new Point(
-                        (int)(-fatorCam.X + obj.Pos.x + ponto.x),
-                        (int)(-fatorCam.Y + obj.Pos.y + ponto.y))).ToArray());
+                    preenche.AddLines(objZoom.Vertices.ToList().Select(ponto => new Point(
+                        (int)(-fatorCam.X + objZoom.Pos.x + ponto.x),
+                        (int)(-fatorCam.Y + objZoom.Pos.y + ponto.y))).ToArray());
                     g.FillPath(new SolidBrush(Color.FromArgb(obj.Mat_render.CorSolida.A, obj.Mat_render.CorSolida.R, obj.Mat_render.CorSolida.G, obj.Mat_render.CorSolida.B)), preenche);
                 }
 
@@ -123,16 +152,16 @@ namespace Engine.Sistema
                 pen.Color = Color.FromArgb(mat.CorBorda.A, mat.CorBorda.R, mat.CorBorda.G, mat.CorBorda.B);
                 pen.Width = mat.LarguraBorda;
 
-                for (int v = 1; v < obj.Vertices.Length; v++)
+                for (int v = 1; v < objZoom.Vertices.Length; v++)
                 {
-                    Vertice2D v1 = obj.Vertices[v - 1]; // Ponto A
-                    Vertice2D v2 = obj.Vertices[v];     // Ponto B
+                    Vertice2D v1 = objZoom.Vertices[v - 1]; // Ponto A
+                    Vertice2D v2 = objZoom.Vertices[v];     // Ponto B
 
                     // Desenha as linhas entre as vértices na câmera
-                    pontoA.X = (int)(-fatorCam.X + obj.Pos.x + v1.x);
-                    pontoA.Y = (int)(-fatorCam.Y + obj.Pos.y + v1.y);
-                    pontoB.X = (int)(-fatorCam.X + obj.Pos.x + v2.x);
-                    pontoB.Y = (int)(-fatorCam.Y + obj.Pos.y + v2.y);
+                    pontoA.X = (int)(-fatorCam.X + objZoom.Pos.x + v1.x);
+                    pontoA.Y = (int)(-fatorCam.Y + objZoom.Pos.y + v1.y);
+                    pontoB.X = (int)(-fatorCam.X + objZoom.Pos.x + v2.x);
+                    pontoB.Y = (int)(-fatorCam.Y + objZoom.Pos.y + v2.y);
 
                     g.DrawLine(pen, pontoA, pontoB);
                 }
@@ -141,7 +170,7 @@ namespace Engine.Sistema
             #region Exibe informações de depuração
             if (engine.Debug)
             {
-                g.DrawString(Nome, font_debug, new SolidBrush(Color.Blue), new Point(10, 10));
+                g.DrawString(Nome.ToUpper(), font_debug, new SolidBrush(Color.Blue), new Point(10, 10));
                 g.DrawString("FPS: " + FPS, font_debug, new SolidBrush(Color.Blue), new Point(10, 30));
                 
             }
@@ -157,7 +186,26 @@ namespace Engine.Sistema
             else _fps++;
             #endregion
 
+            #region Limita o FPS
+            // TODO: Limitar o FPS
+            #endregion
+
             return render;
+        }
+
+        private Objeto2D ZoomObjeto2D(Vetor2D pos_cam, Objeto2D obj, float zoom)
+        {
+            Objeto2D clone = (Objeto2D)obj.Clone();
+
+            for (int i = 0; i < clone.Vertices.Length; i++)
+            {
+                float angulo = Util.AnguloEntreDoisPontos(pos_cam.x, pos_cam.y, clone.Vertices[i].x, clone.Vertices[i].y);
+                clone.Vertices[i].x = (float)Math.Sin(clone.Vertices[i].rad + Util.Angulo2Radiano(-angulo)) * clone.Vertices[i].raio * zoom;
+                clone.Vertices[i].y = (float)Math.Cos(clone.Vertices[i].rad + Util.Angulo2Radiano(-angulo)) * clone.Vertices[i].raio * zoom;
+            }
+            clone.AtualizarXYMinMax();
+
+            return clone;
         }
     }
 }

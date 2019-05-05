@@ -15,7 +15,10 @@ namespace Engine
             return angulo * (float)Math.PI / 180;
         }
 
-        
+        public static float AnguloEntreDoisPontos(float x1, float y1, float x2, float y2)
+        {
+            return (float)(Math.Atan2(y2 - y1, x2 - x1) * 180 / Math.PI);
+        }
 
         /// <summary>
         /// Obtém o objeto 2d através do espaço. Utilize coordenadas existentes em todo o mapa 2D.

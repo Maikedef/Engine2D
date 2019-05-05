@@ -52,7 +52,6 @@
     <Compile Include="Sistema\Animacao2D.cs" />
     <Compile Include="Objetos2D\Avancados\Estrela.cs" />
     <Compile Include="Objetos2D\Avancados\Quadrilatero.cs" />
-    <Compile Include="Camera.cs" />
     <Compile Include="Colisao\Colisor.cs" />
     <Compile Include="frmEditor.cs">
       <SubType>Form</SubType>
@@ -60,7 +59,6 @@
     <Compile Include="frmEditor.Designer.cs">
       <DependentUpon>frmEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Objeto2Ds.cs" />
     <Compile Include="Objetos2D\Primitivos\Circulo.cs" />
     <Compile Include="Objetos2D\Primitivos\Pentagono.cs" />
     <Compile Include="Objetos2D\Primitivos\Quadrado.cs" />

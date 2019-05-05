@@ -39,8 +39,8 @@ namespace Roda
             #endregion
 
             #region Define os atributos dos controles
-            txtPosX.Maximum = txtEscalaY.Maximum = txtEscalaX.Maximum = txtCamPosY.Maximum = txtCamPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
-            txtPosY.Minimum = txtEscalaY.Minimum = txtEscalaX.Minimum = txtCamPosY.Minimum = txtCamPosX.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
+            txtPosX.Maximum = txtCamZoom.Maximum = txtEscalaY.Maximum = txtEscalaX.Maximum = txtCamPosY.Maximum = txtCamPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
+            txtPosY.Minimum = txtCamZoom.Minimum = txtEscalaX.Minimum = txtCamPosY.Minimum = txtCamPosX.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
 
             cboCamera.DisplayMember = "Nome";
             cboCamera.ValueMember = "cam";
@@ -266,6 +266,11 @@ namespace Roda
 
         private void PicDesign_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Delta > 0)
+            {
+
+            }
+
             moveCamera = false;
             if (e.Button == MouseButtons.Middle)
             {
@@ -289,8 +294,7 @@ namespace Roda
         {
             if (txtCamPosX.Focused)
             {
-                float camPosX;
-                if (float.TryParse(txtCamPosX.Text, out camPosX))
+                if (float.TryParse(txtCamPosX.Text, out float camPosX))
                 {
                     engine2D.Camera.Pos.x = camPosX;
                 }
@@ -301,8 +305,7 @@ namespace Roda
         {
             if (txtCamPosY.Focused)
             {
-                float camPosY;
-                if (float.TryParse(txtCamPosY.Text, out camPosY))
+                if (float.TryParse(txtCamPosY.Text, out float camPosY))
                 {
                     engine2D.Camera.Pos.y = camPosY;
                 }
@@ -311,7 +314,7 @@ namespace Roda
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            engine2D.Camera.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
+            //engine2D.Camera.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
 
             //engine2D.Cameras.ToList().ForEach(cam => 
             //{
@@ -360,7 +363,7 @@ namespace Roda
             if (!txtCamPosX.Focused) txtCamPosX.Value = (decimal)engine2D.Camera.Pos.x;
             if (!txtCamPosY.Focused) txtCamPosY.Value = (decimal)engine2D.Camera.Pos.y;
             if (!txtCamAngulo.Focused) txtCamAngulo.Value = (decimal)engine2D.Camera.Angulo;
-            if (!txtCamZoom.Focused) txtCamZoom.Value = (decimal)engine2D.Camera.Zoom;
+            if (!txtCamZoom.Focused) txtCamZoom.Value = (decimal)engine2D.Camera.ZoomCamera;
 
             engine2D.Debug = fPSToolStripMenuItem.Checked;
         }
@@ -474,6 +477,17 @@ namespace Roda
 
         private void Button1_Click(object sender, EventArgs e)
         {
+        }
+
+        private void TxtCamZoom_ValueChanged(object sender, EventArgs e)
+        {
+            if (txtCamZoom.Focused)
+            {
+                if (float.TryParse(txtCamZoom.Text, out float camZoom))
+                {
+                    engine2D.Camera.DefinirZoom(camZoom);
+                }
+            }
         }
     }
 }

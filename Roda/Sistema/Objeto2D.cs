@@ -6,10 +6,30 @@ using System.Threading.Tasks;
 
 namespace Engine.Sistema
 {
+    public struct Vetor2D
+    {
+        public float x;
+        public float y;
+
+        public Vetor2D(float x, float y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public struct Vertice2D
+    {
+        public float x;
+        public float y;
+        public float rad;
+        public float raio;
+    }
+
     /// <summary>
     /// Tipo abstrato que envolve tanto objetos visíveis e invisíveis do simulador
     /// </summary>
-    public abstract class Objeto2D
+    public abstract class Objeto2D : ICloneable
     {
         #region Propriedades
         /// <summary>Id do objeto</summary>
@@ -300,7 +320,7 @@ namespace Engine.Sistema
         }
 
         /// <summary>Atualiza os pontos máximos e mínimos da geometria</summary>
-        protected void AtualizarXYMinMax()
+        public void AtualizarXYMinMax()
         {
             XMax = Vertices.Max(x => x.x);
             XMin = Vertices.Min(x => x.x);
@@ -318,6 +338,11 @@ namespace Engine.Sistema
             }
 
             AtualizarXYMinMax();
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

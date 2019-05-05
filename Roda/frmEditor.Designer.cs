@@ -91,6 +91,9 @@
             this.telaCheiaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fPSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControles = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -115,6 +118,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtCamPosY)).BeginInit();
             this.pnScreen.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabControles.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTriangulo
@@ -164,7 +168,7 @@
             this.picScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picScreen.Location = new System.Drawing.Point(0, 0);
             this.picScreen.Name = "picScreen";
-            this.picScreen.Size = new System.Drawing.Size(552, 496);
+            this.picScreen.Size = new System.Drawing.Size(572, 641);
             this.picScreen.TabIndex = 2;
             this.picScreen.TabStop = false;
             this.picScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.PicScreen_Paint);
@@ -201,7 +205,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 502);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(878, 647);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -215,7 +219,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(294, 496);
+            this.panel1.Size = new System.Drawing.Size(294, 641);
             this.panel1.TabIndex = 0;
             // 
             // groupBox5
@@ -232,6 +236,7 @@
             // 
             this.tabModelagem.Controls.Add(this.tabPrimitivos);
             this.tabModelagem.Controls.Add(this.tabDesenho);
+            this.tabModelagem.Controls.Add(this.tabControles);
             this.tabModelagem.Location = new System.Drawing.Point(6, 19);
             this.tabModelagem.Name = "tabModelagem";
             this.tabModelagem.SelectedIndex = 0;
@@ -626,10 +631,16 @@
             // 
             // txtCamZoom
             // 
+            this.txtCamZoom.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.txtCamZoom.Location = new System.Drawing.Point(178, 81);
             this.txtCamZoom.Name = "txtCamZoom";
             this.txtCamZoom.Size = new System.Drawing.Size(59, 20);
             this.txtCamZoom.TabIndex = 28;
+            this.txtCamZoom.ValueChanged += new System.EventHandler(this.TxtCamZoom_ValueChanged);
             // 
             // label7
             // 
@@ -681,7 +692,7 @@
             this.pnScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnScreen.Location = new System.Drawing.Point(303, 3);
             this.pnScreen.Name = "pnScreen";
-            this.pnScreen.Size = new System.Drawing.Size(552, 496);
+            this.pnScreen.Size = new System.Drawing.Size(572, 641);
             this.pnScreen.TabIndex = 1;
             // 
             // tmrObjeto2D
@@ -697,7 +708,7 @@
             this.debugToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(858, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(878, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -733,11 +744,41 @@
             this.fPSToolStripMenuItem.Text = "FPS";
             this.fPSToolStripMenuItem.Click += new System.EventHandler(this.FPSToolStripMenuItem_Click);
             // 
+            // tabControles
+            // 
+            this.tabControles.Controls.Add(this.button3);
+            this.tabControles.Controls.Add(this.button2);
+            this.tabControles.Location = new System.Drawing.Point(4, 22);
+            this.tabControles.Name = "tabControles";
+            this.tabControles.Padding = new System.Windows.Forms.Padding(3);
+            this.tabControles.Size = new System.Drawing.Size(236, 124);
+            this.tabControles.TabIndex = 2;
+            this.tabControles.Text = "Controles";
+            this.tabControles.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(6, 35);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 0;
+            this.button2.Text = "ComboBox";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 6);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "TextBox";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 526);
+            this.ClientSize = new System.Drawing.Size(878, 671);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
@@ -777,6 +818,7 @@
             this.pnScreen.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControles.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -845,6 +887,9 @@
         private System.Windows.Forms.Button btnNovaCamera;
         private System.Windows.Forms.Button btnQuadrilatero;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TabPage tabControles;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
     }
 }
 

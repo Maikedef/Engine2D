@@ -40,7 +40,7 @@ namespace Engine
                 int.TryParse(ambiguo.Nome.Substring(length), out number);
             }
 
-            objeto2d.Nome += ++number;
+            objeto2d.Nome += (++number).ToString("D2");
             objetos.Add(objeto2d);
         }
 
@@ -63,7 +63,7 @@ namespace Engine
                 int.TryParse(ambiguo.Nome.Substring(length), out number);
             }
 
-            camera.Nome += ++number;
+            camera.Nome += (++number).ToString("D2");
             Cameras.Add(camera);
 
             // Define a primeira camera adicionada como camera padrão
