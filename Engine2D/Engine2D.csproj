@@ -77,6 +77,7 @@
     <Compile Include="Sistema\Objeto2DRenderizar.cs" />
     <Compile Include="Sistema\Pivo2D.cs" />
     <Compile Include="Sistema\Primitivo2D.cs" />
+    <Compile Include="Sistema\Transformacao.cs" />
     <Compile Include="Util.cs" />
     <EmbeddedResource Include="frmEditor.resx">
       <DependentUpon>frmEditor.cs</DependentUpon>

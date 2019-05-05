@@ -41,24 +41,25 @@ namespace Engine.Sistema
         public float Raio { get; set; }
         /// <summary>Ângulo Z do objeto</summary>
         public float Angulo { get; set; }
-        /// <summary>Ângulo Z do objeto</summary>
+        /// <summary>Ângulo X do objeto</summary>
         public float AnguloX { get; set; }
-        /// <summary>Ângulo Z do objeto</summary>
+        /// <summary>Ângulo Y do objeto</summary>
         public float AnguloY { get; set; }
-        /// <summary>Ponto máximo de X do objeto</summary>
+        /// <summary>Ponto X máximo do objeto</summary>
         public float XMax { get; set; }
-        /// <summary>Ponto mínimo de X do objeto</summary>
+        /// <summary>Ponto X mínimo do objeto</summary>
         public float XMin { get; set; }
-        /// <summary>Ponto máximo de Y do objeto</summary>
+        /// <summary>Ponto Y máximo do objeto</summary>
         public float YMax { get; set; }
-        /// <summary>Ponto mínimo de Y do objeto</summary>
+        /// <summary>Ponto Y mínimo do objeto</summary>
         public float YMin { get; set; }
 
         /// <summary>Cor de representação abstrata do objeto</summary>
-        public RGB Cor { get; set; }
+        public RGBA Cor { get; set; }
 
         /// <summary>Define se o objeto está selecionado em modo Editor</summary>
         public bool Selecionado { get; set; }
+        public Transformacao Transformação { get; private set; }
         #endregion
 
         #region Campos
@@ -78,6 +79,11 @@ namespace Engine.Sistema
         /// <summary>Pivôs do objeto</summary>
         public List<Pivo2D> Pivos { get; set; } = new List<Pivo2D>();
         #endregion
+
+        public Objeto2D()
+        {
+            Transformação = new Transformacao(this);
+        }
 
         /// <summary>
         /// Adiciona vértice ao objeto
@@ -336,7 +342,6 @@ namespace Engine.Sistema
                 Vertices[i].x = (float)Math.Sin(Vertices[i].rad + Util.Angulo2Radiano(Angulo)) * Vertices[i].raio;
                 Vertices[i].y = (float)Math.Cos(Vertices[i].rad + Util.Angulo2Radiano(Angulo)) * Vertices[i].raio;
             }
-
             AtualizarXYMinMax();
         }
 

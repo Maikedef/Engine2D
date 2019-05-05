@@ -10,30 +10,11 @@ namespace Engine
 {
     public static class Util
     {
-        public static float Angulo2Radiano(this float angulo)
-        {
-            return angulo * (float)Math.PI / 180;
-        }
-
-
-        public static float DistanciaEntreDoisPontos(Vetor2D pontoA, Vetor2D pontoB)
-        {
-            return DistanciaEntreDoisPontos(pontoA.x, pontoA.y, pontoB.x, pontoB.y);
-        }
-
-        public static float DistanciaEntreDoisPontos(float x1, float y1, float x2, float y2)
-        {
-            return (float)(Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)));
-        }
-
-        public static float AnguloEntreDoisPontos(Vetor2D pontoA, Vetor2D pontoB)
-        {
-            return AnguloEntreDoisPontos(pontoA.x, pontoA.y, pontoB.x, pontoB.y);
-        }
-        public static float AnguloEntreDoisPontos(float x1, float y1, float x2, float y2)
-        {
-            return (float)(Math.Atan2(y2 - y1, x2 - x1) * 180 / Math.PI);
-        }
+        public static float Angulo2Radiano(this float angulo) => angulo * (float)Math.PI / 180;
+        public static float DistanciaEntreDoisPontos(Vetor2D pontoA, Vetor2D pontoB) => DistanciaEntreDoisPontos(pontoA.x, pontoA.y, pontoB.x, pontoB.y);
+        public static float DistanciaEntreDoisPontos(float x1, float y1, float x2, float y2) => (float)(Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)));
+        public static float AnguloEntreDoisPontos(Vetor2D pontoA, Vetor2D pontoB) => AnguloEntreDoisPontos(pontoA.x, pontoA.y, pontoB.x, pontoB.y);
+        public static float AnguloEntreDoisPontos(float x1, float y1, float x2, float y2) => (float)(Math.Atan2(y2 - y1, x2 - x1) * 180 / Math.PI);
 
         /// <summary>
         /// Obtém o objeto 2d através do espaço. Utilize coordenadas existentes em todo o mapa 2D.

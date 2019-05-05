@@ -6,16 +6,6 @@ using System.Threading.Tasks;
 
 namespace Engine.Sistema
 {
-    public struct RGB
-    {
-        /// <summary>Red (Vermelho)</summary>
-        public byte R;
-        /// <summary>Green (Verde)</summary>
-        public byte G;
-        /// <summary>Blue (Azul)</summary>
-        public byte B;
-    }
-
     public struct RGBA
     {
         /// <summary>Red (Vermelho)</summary>

@@ -44,7 +44,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnQuadrilatero = new System.Windows.Forms.Button();
             this.btnVarios = new System.Windows.Forms.Button();
+            this.tabAvancado = new System.Windows.Forms.TabPage();
             this.tabDesenho = new System.Windows.Forms.TabPage();
+            this.tabControles = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label15 = new System.Windows.Forms.Label();
             this.trackLinhaDoTempoAnimacao = new System.Windows.Forms.TrackBar();
@@ -91,16 +95,14 @@
             this.telaCheiaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fPSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControles = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.tabAvancado = new System.Windows.Forms.TabPage();
+            this.desligarZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabModelagem.SuspendLayout();
             this.tabPrimitivos.SuspendLayout();
+            this.tabControles.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackLinhaDoTempoAnimacao)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -119,7 +121,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtCamPosY)).BeginInit();
             this.pnScreen.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.tabControles.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTriangulo
@@ -292,6 +293,16 @@
             this.btnVarios.UseVisualStyleBackColor = true;
             this.btnVarios.Click += new System.EventHandler(this.BtnVarios_Click);
             // 
+            // tabAvancado
+            // 
+            this.tabAvancado.Location = new System.Drawing.Point(4, 22);
+            this.tabAvancado.Name = "tabAvancado";
+            this.tabAvancado.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAvancado.Size = new System.Drawing.Size(236, 124);
+            this.tabAvancado.TabIndex = 3;
+            this.tabAvancado.Text = "Avançado";
+            this.tabAvancado.UseVisualStyleBackColor = true;
+            // 
             // tabDesenho
             // 
             this.tabDesenho.Location = new System.Drawing.Point(4, 22);
@@ -301,6 +312,36 @@
             this.tabDesenho.TabIndex = 1;
             this.tabDesenho.Text = "Desenho";
             this.tabDesenho.UseVisualStyleBackColor = true;
+            // 
+            // tabControles
+            // 
+            this.tabControles.Controls.Add(this.button3);
+            this.tabControles.Controls.Add(this.button2);
+            this.tabControles.Location = new System.Drawing.Point(4, 22);
+            this.tabControles.Name = "tabControles";
+            this.tabControles.Padding = new System.Windows.Forms.Padding(3);
+            this.tabControles.Size = new System.Drawing.Size(236, 124);
+            this.tabControles.TabIndex = 2;
+            this.tabControles.Text = "Controles";
+            this.tabControles.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(6, 6);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "TextBox";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(6, 35);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 0;
+            this.button2.Text = "ComboBox";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
@@ -733,7 +774,8 @@
             // debugToolStripMenuItem
             // 
             this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fPSToolStripMenuItem});
+            this.fPSToolStripMenuItem,
+            this.desligarZoomToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.debugToolStripMenuItem.Text = "Debug";
@@ -743,49 +785,18 @@
             this.fPSToolStripMenuItem.Checked = true;
             this.fPSToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.fPSToolStripMenuItem.Name = "fPSToolStripMenuItem";
-            this.fPSToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.fPSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fPSToolStripMenuItem.Text = "FPS";
             this.fPSToolStripMenuItem.Click += new System.EventHandler(this.FPSToolStripMenuItem_Click);
             // 
-            // tabControles
+            // desligarZoomToolStripMenuItem
             // 
-            this.tabControles.Controls.Add(this.button3);
-            this.tabControles.Controls.Add(this.button2);
-            this.tabControles.Location = new System.Drawing.Point(4, 22);
-            this.tabControles.Name = "tabControles";
-            this.tabControles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabControles.Size = new System.Drawing.Size(236, 124);
-            this.tabControles.TabIndex = 2;
-            this.tabControles.Text = "Controles";
-            this.tabControles.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(6, 35);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "ComboBox";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(6, 6);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "TextBox";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // tabAvancado
-            // 
-            this.tabAvancado.Location = new System.Drawing.Point(4, 22);
-            this.tabAvancado.Name = "tabAvancado";
-            this.tabAvancado.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAvancado.Size = new System.Drawing.Size(236, 124);
-            this.tabAvancado.TabIndex = 3;
-            this.tabAvancado.Text = "Avançado";
-            this.tabAvancado.UseVisualStyleBackColor = true;
+            this.desligarZoomToolStripMenuItem.Checked = true;
+            this.desligarZoomToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.desligarZoomToolStripMenuItem.Name = "desligarZoomToolStripMenuItem";
+            this.desligarZoomToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.desligarZoomToolStripMenuItem.Text = "Desligar Zoom";
+            this.desligarZoomToolStripMenuItem.Click += new System.EventHandler(this.DesligarZoomToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -798,6 +809,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -808,6 +820,7 @@
             this.groupBox5.ResumeLayout(false);
             this.tabModelagem.ResumeLayout(false);
             this.tabPrimitivos.ResumeLayout(false);
+            this.tabControles.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackLinhaDoTempoAnimacao)).EndInit();
@@ -831,7 +844,6 @@
             this.pnScreen.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabControles.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -904,6 +916,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage tabAvancado;
+        private System.Windows.Forms.ToolStripMenuItem desligarZoomToolStripMenuItem;
     }
 }
 

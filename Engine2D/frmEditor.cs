@@ -20,16 +20,14 @@ namespace Roda
     public partial class Form1 : Form
     {
         bool _sair = false;
-        int raio_padrao = 50;
+        readonly int raio_padrao = 50;
+
         Engine2D engine2D = new Engine2D();
         Objeto2D obj_selecionado;
 
         public Form1()
         {
             InitializeComponent();
-
-            DoubleBuffered = true;
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,33 +40,27 @@ namespace Roda
             txtPosX.Maximum = txtCamZoom.Maximum = txtEscalaY.Maximum = txtEscalaX.Maximum = txtCamPosY.Maximum = txtCamPosX.Maximum = txtPosY.Maximum = txtAngulo.Maximum = txtRaio.Maximum = decimal.MaxValue;
             txtPosY.Minimum = txtCamZoom.Minimum = txtEscalaX.Minimum = txtCamPosY.Minimum = txtCamPosX.Minimum = txtPosY.Minimum = txtAngulo.Minimum = txtRaio.Minimum = decimal.MinValue;
 
-            cboCamera.DisplayMember = "Nome";
-            cboCamera.ValueMember = "cam";
-            cboCamera.DataSource = engine2D.Cameras.Select(
-                cam => new
-                {
-                    cam.Id,
-                    cam.Nome,
-                    cam
-                }).ToList();
-
-            cboObjeto2D.DisplayMember = "Nome";
-            cboObjeto2D.ValueMember = "o";
-            cboObjeto2D.DataSource = engine2D.objetos.Select(
-                o => new
-                {
-                    o.Id,
-                    o.Nome,
-                    o
-                }).ToList();
-
             BtnCirculo_Click(sender, e);
             AtualizarControles(null);
+            AtualizarComboObjetos2D();
+
+            debugToolStripMenuItem.Checked = engine2D.Debug = true;
+            desligarZoomToolStripMenuItem.Checked = engine2D.Camera.DesligarSistemaZoom = true;
+
+            cboCamera.DisplayMember = "Nome";
+            cboCamera.ValueMember = "Cam";
+            cboCamera.DataSource = engine2D.Cameras.Select(
+                Cam => new
+                {
+                    Cam.Id,
+                    Cam.Nome,
+                    Cam
+                }).ToList();
             #endregion
 
             Show();
 
-            // Loop principal de rotinas do simulador 2D
+            #region  Loop principal de rotinas do simulador 2D
             while (!_sair)
             {
                 // Use o tempo delta em todos os cálculos que alteram o comportamento dos objetos 2d
@@ -85,18 +77,11 @@ namespace Roda
                 picScreen.Image = engine2D.Camera.Renderizar();
                 Application.DoEvents();
             }
+            #endregion
         }
 
         private void AtualizarControles(Objeto2D obj)
         {
-            cboObjeto2D.DataSource = engine2D.objetos
-                .Select(o => new
-                {
-                    o.Id,
-                    o.Nome,
-                    o
-                }).ToList();
-            
             if (obj != null)
             {
                 cboObjeto2D.SelectedValue = obj;
@@ -132,25 +117,8 @@ namespace Roda
             }
             else if (e.Button == MouseButtons.Left)
             {
-                Objeto2D novo_obj_selecionado =
-                    engine2D.ObterObjeto2DPelaCamera(engine2D.Camera, new Vetor2D(e.X, e.Y));
-
-                // Seleciona o novo objeto
-                if (novo_obj_selecionado != null)
-                {
-                    if (obj_selecionado != null) obj_selecionado.Selecionado = false; // Deseleciona o objeto anterior
-                    obj_selecionado = novo_obj_selecionado; // Define o novo objeto selecionado
-                    novo_obj_selecionado.Selecionado = true; // Define como selecionado
-                }
-                else
-                {
-                    obj_selecionado.Selecionado = false;
-                }
-
-                AtualizarControles(novo_obj_selecionado);
+                cboObjeto2D.SelectedValue = engine2D.ObterObjeto2DPelaCamera(engine2D.Camera, new Vetor2D(e.X, e.Y));
             }
-
-           
         }
 
         private Vetor2D PosAleatorio()
@@ -162,57 +130,79 @@ namespace Roda
             return new Vetor2D(x, y);
         }
 
+        private void AtualizarComboObjetos2D()
+        {
+            cboObjeto2D.DisplayMember = "Nome";
+            cboObjeto2D.ValueMember = "o";
+            cboObjeto2D.DataSource = engine2D.objetos
+                .Select(o => new
+                {
+                    o.Id,
+                    o.Nome,
+                    o
+                }).ToList();
+        }
+
         private void BtnQuadrado_Click(object sender, EventArgs e)
         {
-            Quadrado quadrado = new Quadrado();
-            quadrado.Pos = PosAleatorio();
+            Quadrado obj = new Quadrado();
+            obj.Pos = PosAleatorio();
             var rnd = new Random(Environment.TickCount);
-            quadrado.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-            quadrado.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
 
-            quadrado.GerarGeometria(45, raio_padrao);
-            engine2D.AddObjeto(obj_selecionado = quadrado);
-            AtualizarControles(obj_selecionado);
+            obj.GerarGeometria(45, raio_padrao);
+            engine2D.AddObjeto(obj);
+
+            AtualizarComboObjetos2D();
+            cboObjeto2D.SelectedValue = obj;
         }
+
 
         private void BtnCirculo_Click(object sender, EventArgs e)
         {
-            Circulo circulo = new Circulo();
-            circulo.Pos = PosAleatorio();
+            Circulo obj = new Circulo();
+            obj.Pos = PosAleatorio();
             var rnd = new Random(Environment.TickCount);
-            circulo.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-            circulo.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
 
-            circulo.GerarGeometria(0, raio_padrao);
-            engine2D.AddObjeto(obj_selecionado = circulo);
-            AtualizarControles(obj_selecionado);
+            obj.GerarGeometria(0, raio_padrao);
+            engine2D.AddObjeto(obj);
+
+            AtualizarComboObjetos2D();
+            cboObjeto2D.SelectedValue = obj;
         }
 
         private void BtnTriangulo_Click(object sender, EventArgs e)
         {
-            Triangulo triangulo = new Triangulo();
-            triangulo.Pos = PosAleatorio();
+            Triangulo obj = new Triangulo();
+            obj.Pos = PosAleatorio();
 
             var rnd = new Random(Environment.TickCount);
-            triangulo.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-            triangulo.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
 
-            triangulo.GerarGeometria(0, raio_padrao);
-            engine2D.AddObjeto(obj_selecionado = triangulo);
-            AtualizarControles(obj_selecionado);
+            obj.GerarGeometria(0, raio_padrao);
+            engine2D.AddObjeto(obj);
+
+            AtualizarComboObjetos2D();
+            cboObjeto2D.SelectedValue = obj;
         }
 
         private void BtnPentagono_Click(object sender, EventArgs e)
         {
-            Pentagono pentagono = new Pentagono();
-            pentagono.Pos = PosAleatorio();
+            Pentagono obj = new Pentagono();
+            obj.Pos = PosAleatorio();
             var rnd = new Random(Environment.TickCount);
-            pentagono.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-            pentagono.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
 
-            pentagono.GerarGeometria(0, raio_padrao);
-            engine2D.AddObjeto(obj_selecionado = pentagono);
-            AtualizarControles(obj_selecionado);
+            obj.GerarGeometria(0, raio_padrao);
+            engine2D.AddObjeto(obj);
+
+            AtualizarComboObjetos2D();
+            cboObjeto2D.SelectedValue = obj;
         }
 
         private void TxtNome_TextChanged(object sender, EventArgs e)
@@ -319,7 +309,7 @@ namespace Roda
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            //engine2D.Camera.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
+            engine2D.Camera.RedefinirResolucao(picScreen.ClientRectangle.Width, picScreen.ClientRectangle.Height);
 
             //engine2D.Cameras.ToList().ForEach(cam => 
             //{
@@ -370,7 +360,7 @@ namespace Roda
             if (!txtCamAngulo.Focused) txtCamAngulo.Value = (decimal)engine2D.Camera.Angulo;
             if (!txtCamZoom.Focused) txtCamZoom.Value = (decimal)engine2D.Camera.ZoomCamera;
 
-            engine2D.Debug = fPSToolStripMenuItem.Checked;
+            
         }
 
         private void BtnVarios_Click(object sender, EventArgs e)
@@ -392,15 +382,22 @@ namespace Roda
 
         private void BtnFocarObjeto_Click(object sender, EventArgs e)
         {
-            if (cboObjeto2D.SelectedValue == null) return;
-            engine2D.Camera.Pos = ((Objeto2D)cboObjeto2D.SelectedValue).Pos;
+            if (cboObjeto2D.SelectedValue != null)
+            {
+                engine2D.Camera.FocarNoObjeto2D((Objeto2D)cboObjeto2D.SelectedValue);
+            }
         }
 
         private void CboObjeto2D_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboObjeto2D.Focused)
+            if (cboObjeto2D.SelectedValue != null)
             {
-                BtnFocarObjeto_Click(sender, e);
+                if (obj_selecionado != null)
+                    obj_selecionado.Selecionado = false;
+                AtualizarControles(obj_selecionado = ((Objeto2D)cboObjeto2D.SelectedValue));
+                obj_selecionado.Selecionado = true;
+
+                engine2D.Camera.FocarNoObjeto2D(obj_selecionado);
             }
         }
 
@@ -437,6 +434,7 @@ namespace Roda
         private void FPSToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fPSToolStripMenuItem.Checked = !fPSToolStripMenuItem.Checked;
+            engine2D.Debug = fPSToolStripMenuItem.Checked;
         }
 
         private void BtnNovaCamera_Click(object sender, EventArgs e)
@@ -493,6 +491,17 @@ namespace Roda
                     engine2D.Camera.DefinirZoom(camZoom);
                 }
             }
+        }
+
+        private void DesligarZoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            desligarZoomToolStripMenuItem.Checked = !desligarZoomToolStripMenuItem.Checked;
+            engine2D.Camera.DesligarSistemaZoom = desligarZoomToolStripMenuItem.Checked;
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            
         }
     }
 }
