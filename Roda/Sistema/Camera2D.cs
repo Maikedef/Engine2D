@@ -129,7 +129,11 @@ namespace Engine.Sistema
                 Objeto2DRenderizar obj = engine.objetos[i] as Objeto2DRenderizar;
                 if (obj == null) continue;
 
-                Objeto2D objZoom = ZoomObjeto2D(Pos, obj, ZoomCamera);
+                Objeto2D objZoom = ZoomObjeto2D(obj, ZoomCamera);
+                objZoom = ZoomPosObjeto2D(objZoom, ZoomCamera);
+
+                
+
                 if (!Objeto2DVisivel(objZoom)) continue;
 
                 if (obj.Mat_render.CorSolida.A > 0) // Se não transparente...
@@ -170,8 +174,8 @@ namespace Engine.Sistema
             #region Exibe informações de depuração
             if (engine.Debug)
             {
-                g.DrawString(Nome.ToUpper(), font_debug, new SolidBrush(Color.Blue), new Point(10, 10));
-                g.DrawString("FPS: " + FPS, font_debug, new SolidBrush(Color.Blue), new Point(10, 30));
+                g.DrawString(Nome.ToUpper(), font_debug, new SolidBrush(Color.Aquamarine), new Point(10, 10));
+                g.DrawString("FPS: " + FPS, font_debug, new SolidBrush(Color.Aquamarine), new Point(10, 30));
                 
             }
             #endregion
@@ -193,19 +197,40 @@ namespace Engine.Sistema
             return render;
         }
 
-        private Objeto2D ZoomObjeto2D(Vetor2D pos_cam, Objeto2D obj, float zoom)
+        /// <summary>
+        /// Trabalha o Zoom orientado a escala do objeto
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="zoom"></param>
+        /// <returns></returns>
+        private Objeto2D ZoomObjeto2D(Objeto2D obj, float zoom)
         {
             Objeto2D clone = (Objeto2D)obj.Clone();
 
             for (int i = 0; i < clone.Vertices.Length; i++)
             {
-                float angulo = Util.AnguloEntreDoisPontos(pos_cam.x, pos_cam.y, clone.Vertices[i].x, clone.Vertices[i].y);
-                clone.Vertices[i].x = (float)Math.Sin(clone.Vertices[i].rad + Util.Angulo2Radiano(-angulo)) * clone.Vertices[i].raio * zoom;
-                clone.Vertices[i].y = (float)Math.Cos(clone.Vertices[i].rad + Util.Angulo2Radiano(-angulo)) * clone.Vertices[i].raio * zoom;
+                clone.Vertices[i].x = (float)Math.Sin(clone.Vertices[i].rad + Util.Angulo2Radiano(clone.Angulo)) * clone.Vertices[i].raio * zoom;
+                clone.Vertices[i].y = (float)Math.Cos(clone.Vertices[i].rad + Util.Angulo2Radiano(clone.Angulo)) * clone.Vertices[i].raio * zoom;
             }
             clone.AtualizarXYMinMax();
 
             return clone;
+        }
+
+        /// <summary>
+        /// Trabalha o Zoom orientado a posição do objeto em relação ao centro da camera
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="zoom"></param>
+        /// <returns></returns>
+        private Objeto2D ZoomPosObjeto2D(Objeto2D obj, float zoom)
+        {
+            float radZoom = Util.Angulo2Radiano(Util.AnguloEntreDoisPontos(Pos, obj.Pos));
+            float distZoom = Util.DistanciaEntreDoisPontos(Pos, obj.Pos) * zoom;
+            obj.Pos.x += (float)Math.Cos(radZoom) * distZoom;
+            obj.Pos.y += (float)Math.Sin(radZoom) * distZoom;
+
+            return obj;
         }
     }
 }

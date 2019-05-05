@@ -121,6 +121,11 @@ namespace Roda
         Point cameraDrag;
         private void PicDesign_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Delta > 0)
+            {
+
+            }
+
             if (e.Button == MouseButtons.Middle)
             {
                 cameraDrag = Cursor.Position;

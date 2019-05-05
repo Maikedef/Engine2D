@@ -633,6 +633,7 @@
             // 
             // txtCamZoom
             // 
+            this.txtCamZoom.DecimalPlaces = 1;
             this.txtCamZoom.Increment = new decimal(new int[] {
             1,
             0,
