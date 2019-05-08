@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Objetos2D.Primitivos
 {
-    public sealed class Triangulo : Primitivo2D
+    public class Triangulo : Primitivo2D
     {
         public Triangulo()
         {

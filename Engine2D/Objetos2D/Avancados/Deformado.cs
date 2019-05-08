@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Engine.Objetos2D.Avancados
 {
-    public class Quadrilatero : Avancado2D
+    public class Deformado : Avancado2D
     {
-        public Quadrilatero()
+        public Deformado()
         {
-            Nome = "Quadrilatero";
+            Nome = "Deformado";
         }
 
         public void GerarGeometria(int angulo, int raio_min, int raio_max)
         {
-            GerarGeometriaRadialVariante(angulo, raio_min, raio_max, 4);
+            GerarGeometriaRadialVariante(angulo, raio_min, raio_max, new Random(Environment.TickCount).Next(7, 15));
         }
     }
 }

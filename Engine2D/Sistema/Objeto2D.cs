@@ -64,11 +64,11 @@ namespace Engine.Sistema
 
         #region Campos
         /// <summary>Posição do objeto</summary>
-        public Vetor2D Pos;
+        public Vetor2D Pos = new Vetor2D(0, 0);
         /// <summary>Escala do objeto</summary>
-        public Vetor2D Escala;
+        public Vetor2D Escala = new Vetor2D(1, 1);
         /// <summary>Ponto central do objeto</summary>
-        public Vetor2D Centro;
+        public Vetor2D Centro = new Vetor2D(0, 0);
         #endregion
 
         #region Arrays
@@ -245,8 +245,39 @@ namespace Engine.Sistema
         /// <param name="raio"></param>
         public virtual void DefinirRaio(float raio)
         {
+            // Define os raios internos de cada vértice proporcionalmente ao novo raio de ponto máximo da circunferência
+            int idx = IndicePorMaiorRaio();
+
+            float raioMax = Vertices[idx].raio;
+            float diff = raio - raioMax;
+            if (diff == 0) return;
+
+            float percentual = diff / raioMax * 100; // Percentual da diferença
+            for (int i = 0; i < Vertices.Length; i++)
+            {
+                if (i == idx) continue; // Pula o índice de referência
+                Vertices[i].raio += Vertices[i].raio * percentual / 100;
+            }
             Raio = raio;
             AtualizarGeometria();
+        }
+
+        private int IndicePorMaiorRaio()
+        {
+            // TODO: Há uma falha quando diminui o raio
+
+            int idxMax = 0;
+            float v = float.MinValue;
+
+            for (int i = 0; i < Vertices.Length; i++)
+            {
+                if (Vertices[i].raio > v)
+                {
+                    v = Vertices[i].raio;
+                    idxMax = i;
+                }
+            }
+            return idxMax;
         }
 
         /// <summary>
@@ -334,13 +365,20 @@ namespace Engine.Sistema
             YMin = Vertices.Min(x => x.y);
         }
 
+        /// <summary>Atualiza o raio pelo ponto máximo da circunferência. Quando há variação de raios entre uma vértice e outra essa atualização é necessária.</summary>
+        public float AtualizarRaio()
+        {
+            Raio = Vertices.Max(x => x.raio);
+            return Raio;
+        }
+
         /// <summary>Atualiza todas as vértices considerando fatores como: raio, ângulo, escala, etc.</summary>
         public virtual void AtualizarGeometria()
         {
             for (int i = 0; i < Vertices.Length; i++)
             {
-                Vertices[i].x = (float)Math.Sin(Vertices[i].rad + Util.Angulo2Radiano(Angulo)) * Vertices[i].raio;
-                Vertices[i].y = (float)Math.Cos(Vertices[i].rad + Util.Angulo2Radiano(Angulo)) * Vertices[i].raio;
+                Vertices[i].x = (float)Math.Sin(Vertices[i].rad + Util.Angulo2Radiano(Angulo)) * Vertices[i].raio * Escala.x;
+                Vertices[i].y = (float)Math.Cos(Vertices[i].rad + Util.Angulo2Radiano(Angulo)) * Vertices[i].raio * Escala.y;
             }
             AtualizarXYMinMax();
         }

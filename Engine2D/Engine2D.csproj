@@ -49,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Luzes\LuzDirecional.cs" />
+    <Compile Include="Luzes\LuzDestaque.cs" />
+    <Compile Include="Luzes\LuzObjeto2D.cs" />
+    <Compile Include="Luzes\LuzPonto.cs" />
+    <Compile Include="Objetos2D\Avancados\Deformado.cs" />
     <Compile Include="Sistema\Animacao2D.cs" />
     <Compile Include="Objetos2D\Avancados\Estrela.cs" />
     <Compile Include="Objetos2D\Avancados\Quadrilatero.cs" />
@@ -72,8 +77,10 @@
     <Compile Include="Sistema\Entrada\Joystick.cs" />
     <Compile Include="Sistema\Entrada\Mouse.cs" />
     <Compile Include="Sistema\Entrada\Teclado.cs" />
+    <Compile Include="Sistema\Luz2D.cs" />
     <Compile Include="Sistema\Material.cs" />
     <Compile Include="Sistema\Objeto2D.cs" />
+    <Compile Include="Sistema\Luz2DRenderizar.cs" />
     <Compile Include="Sistema\Objeto2DRenderizar.cs" />
     <Compile Include="Sistema\Pivo2D.cs" />
     <Compile Include="Sistema\Primitivo2D.cs" />

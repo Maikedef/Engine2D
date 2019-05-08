@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine.Objetos2D.Avancados
+namespace Engine.Luzes
 {
-    public class Estrela : Avancado2D
+    public sealed class LuzDirecional : Luz2D
     {
-        public Estrela()
+        public LuzDirecional()
         {
-            Nome = "Estrela";
+            Nome = "LuzDirecional";
+
+            
         }
     }
 }

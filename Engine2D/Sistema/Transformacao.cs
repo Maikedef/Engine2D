@@ -9,7 +9,7 @@ namespace Engine
 {
     public class Transformacao
     {
-        Objeto2D obj;
+        readonly Objeto2D obj;
 
         public Transformacao(Objeto2D obj)
         {

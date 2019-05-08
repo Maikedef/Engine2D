@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine.Luzes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -160,56 +161,88 @@ namespace Engine.Sistema
                 for (int i = 0; i < engine.objetos.Count; i++)
                 {
                     Objeto2DRenderizar obj = engine.objetos[i] as Objeto2DRenderizar;
-                    if (obj == null) continue;
-
-                    #region ZOOM
-                    if (!DesligarSistemaZoom)
+                    if (obj != null)
                     {
-                        obj = (Objeto2DRenderizar)obj.Clone();
-                        Objeto2D objZoom = ZoomEscalaObjeto2D(obj, ZoomCamera);
-                        Objeto2D objPosZoom = ZoomPosObjeto2D(obj, ZoomCamera);
-                        objZoom.Pos = objPosZoom.Pos;
-                    }
-                    #endregion
-
-                    if (!Objeto2DVisivel(obj)) continue;
-
-                    if (obj.Mat_render.CorSolida.A > 0) // Pinta objeto materialmente visível
-                    {
-                        GraphicsPath preenche = new GraphicsPath(FillMode.Alternate);
-                        preenche.AddLines(obj.Vertices.ToList().Select(ponto => new Point(
-                            (int)(-fatorCam.X + obj.Pos.x + ponto.x),
-                            (int)(-fatorCam.Y + obj.Pos.y + ponto.y))).ToArray());
-                        g.FillPath(new SolidBrush(Color.FromArgb(obj.Mat_render.CorSolida.A, obj.Mat_render.CorSolida.R, obj.Mat_render.CorSolida.G, obj.Mat_render.CorSolida.B)), preenche);
-                    }
-
-                    // Materialização do objeto na Câmera
-                    Material mat;
-                    if (obj.Selecionado)
-                        mat = obj.Mat_render_sel;
-                    else
-                        mat = obj.Mat_render;
-
-                    if (mat.CorBorda.A > 0) // Desenha borda materialmente visível
-                    {
-                        // Cor da borda do objeto
-                        pen.Color = Color.FromArgb(mat.CorBorda.A, mat.CorBorda.R, mat.CorBorda.G, mat.CorBorda.B);
-                        pen.Width = mat.LarguraBorda;
-
-                        for (int v = 1; v < obj.Vertices.Length; v++)
+                        #region ZOOM
+                        if (!DesligarSistemaZoom)
                         {
-                            Vertice2D v1 = obj.Vertices[v - 1]; // Ponto A
-                            Vertice2D v2 = obj.Vertices[v];     // Ponto B
+                            obj = (Objeto2DRenderizar)obj.Clone();
+                            Objeto2D objZoom = ZoomEscalaObjeto2D(obj, ZoomCamera);
+                            Objeto2D objPosZoom = ZoomPosObjeto2D(obj, ZoomCamera);
+                            objZoom.Pos = objPosZoom.Pos;
+                        }
+                        #endregion
 
-                            // Desenha as linhas entre as vértices na câmera
-                            pontoA.X = (int)(-fatorCam.X + obj.Pos.x + v1.x);
-                            pontoA.Y = (int)(-fatorCam.Y + obj.Pos.y + v1.y);
-                            pontoB.X = (int)(-fatorCam.X + obj.Pos.x + v2.x);
-                            pontoB.Y = (int)(-fatorCam.Y + obj.Pos.y + v2.y);
+                        if (Objeto2DVisivel(obj))
+                        {
+                            if (obj.Mat_render.CorSolida.A > 0) // Pinta objeto materialmente visível
+                            {
+                                GraphicsPath preenche = new GraphicsPath(FillMode.Alternate);
+                                preenche.AddLines(obj.Vertices.ToList().Select(ponto => new Point(
+                                    (int)(-fatorCam.X + obj.Pos.x + ponto.x),
+                                    (int)(-fatorCam.Y + obj.Pos.y + ponto.y))).ToArray());
+                                g.FillPath(new SolidBrush(Color.FromArgb(obj.Mat_render.CorSolida.A, obj.Mat_render.CorSolida.R, obj.Mat_render.CorSolida.G, obj.Mat_render.CorSolida.B)), preenche);
+                            }
 
-                            g.DrawLine(pen, pontoA, pontoB);
+                            // Materialização do objeto na Câmera
+                            Material mat;
+                            if (obj.Selecionado)
+                                mat = obj.Mat_render_sel;
+                            else
+                                mat = obj.Mat_render;
+
+                            if (mat.CorBorda.A > 0) // Desenha borda materialmente visível
+                            {
+                                // Cor da borda do objeto
+                                pen.Color = Color.FromArgb(mat.CorBorda.A, mat.CorBorda.R, mat.CorBorda.G, mat.CorBorda.B);
+                                pen.Width = mat.LarguraBorda;
+
+                                for (int v = 1; v < obj.Vertices.Length; v++)
+                                {
+                                    Vertice2D v1 = obj.Vertices[v - 1]; // Ponto A
+                                    Vertice2D v2 = obj.Vertices[v];     // Ponto B
+
+                                    // Desenha as linhas entre as vértices na câmera
+                                    pontoA.X = (int)(-fatorCam.X + obj.Pos.x + v1.x);
+                                    pontoA.Y = (int)(-fatorCam.Y + obj.Pos.y + v1.y);
+                                    pontoB.X = (int)(-fatorCam.X + obj.Pos.x + v2.x);
+                                    pontoB.Y = (int)(-fatorCam.Y + obj.Pos.y + v2.y);
+
+                                    g.DrawLine(pen, pontoA, pontoB);
+                                }
+                            }
                         }
                     }
+                }
+
+                // A iluminação deve ser renderizada após pintar todos os objetos.
+                for (int i = 0; i < engine.objetos.Count; i++)
+                {
+                    Luz2DRenderizar luz = engine.objetos[i] as Luz2DRenderizar;
+                    if (luz != null)
+                    {
+                        if (luz is LuzPonto)
+                        {
+                            if (Objeto2DVisivel(luz))
+                            {
+                                GraphicsPath preenche = new GraphicsPath();
+                                preenche.AddLines(luz.Vertices.ToList().Select(ponto => new Point(
+                                    (int)(-fatorCam.X + luz.Pos.x + ponto.x),
+                                    (int)(-fatorCam.Y + luz.Pos.y + ponto.y))).ToArray());
+
+                                PathGradientBrush pthGrBrush = new PathGradientBrush(preenche);
+                                pthGrBrush.CenterColor = Color.FromArgb(luz.Cor.A, luz.Cor.R, luz.Cor.G, luz.Cor.B);
+                                Color[] colors = { Color.FromArgb(0, 0, 0, 0) };
+                                pthGrBrush.SurroundColors = colors;
+                                g.FillPath(pthGrBrush, preenche);
+                            }
+                        }
+                    }
+
+                    // Sombras devem ser renderizadas após a renderização da iluminação
+                    #region Sombras
+
+                    #endregion
                 }
 
                 #region Exibe informações de depuração

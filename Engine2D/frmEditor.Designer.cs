@@ -96,12 +96,18 @@
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fPSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.desligarZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnDeformado = new System.Windows.Forms.Button();
+            this.tabLuzes = new System.Windows.Forms.TabPage();
+            this.btnLuzDestaque = new System.Windows.Forms.Button();
+            this.btnLuzDirecional = new System.Windows.Forms.Button();
+            this.btnLuzPonto = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabModelagem.SuspendLayout();
             this.tabPrimitivos.SuspendLayout();
+            this.tabAvancado.SuspendLayout();
             this.tabControles.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackLinhaDoTempoAnimacao)).BeginInit();
@@ -121,6 +127,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtCamPosY)).BeginInit();
             this.pnScreen.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabLuzes.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTriangulo
@@ -176,7 +183,6 @@
             this.picScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.PicScreen_Paint);
             this.picScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseDown);
             this.picScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicDesign_MouseMove);
-            this.picScreen.Resize += new System.EventHandler(this.PicScreen_Resize);
             // 
             // label1
             // 
@@ -241,6 +247,7 @@
             this.tabModelagem.Controls.Add(this.tabAvancado);
             this.tabModelagem.Controls.Add(this.tabDesenho);
             this.tabModelagem.Controls.Add(this.tabControles);
+            this.tabModelagem.Controls.Add(this.tabLuzes);
             this.tabModelagem.Location = new System.Drawing.Point(6, 19);
             this.tabModelagem.Name = "tabModelagem";
             this.tabModelagem.SelectedIndex = 0;
@@ -250,7 +257,6 @@
             // tabPrimitivos
             // 
             this.tabPrimitivos.Controls.Add(this.button1);
-            this.tabPrimitivos.Controls.Add(this.btnQuadrilatero);
             this.tabPrimitivos.Controls.Add(this.btnQuadrado);
             this.tabPrimitivos.Controls.Add(this.btnVarios);
             this.tabPrimitivos.Controls.Add(this.btnCirculo);
@@ -276,7 +282,7 @@
             // 
             // btnQuadrilatero
             // 
-            this.btnQuadrilatero.Location = new System.Drawing.Point(87, 75);
+            this.btnQuadrilatero.Location = new System.Drawing.Point(6, 29);
             this.btnQuadrilatero.Name = "btnQuadrilatero";
             this.btnQuadrilatero.Size = new System.Drawing.Size(75, 23);
             this.btnQuadrilatero.TabIndex = 38;
@@ -296,6 +302,8 @@
             // 
             // tabAvancado
             // 
+            this.tabAvancado.Controls.Add(this.btnQuadrilatero);
+            this.tabAvancado.Controls.Add(this.btnDeformado);
             this.tabAvancado.Location = new System.Drawing.Point(4, 22);
             this.tabAvancado.Name = "tabAvancado";
             this.tabAvancado.Padding = new System.Windows.Forms.Padding(3);
@@ -337,7 +345,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 35);
+            this.button2.Location = new System.Drawing.Point(6, 29);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 0;
@@ -501,6 +509,12 @@
             // 
             // txtEscalaX
             // 
+            this.txtEscalaX.DecimalPlaces = 1;
+            this.txtEscalaX.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.txtEscalaX.Location = new System.Drawing.Point(55, 77);
             this.txtEscalaX.Name = "txtEscalaX";
             this.txtEscalaX.Size = new System.Drawing.Size(59, 20);
@@ -509,6 +523,12 @@
             // 
             // txtEscalaY
             // 
+            this.txtEscalaY.DecimalPlaces = 1;
+            this.txtEscalaY.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.txtEscalaY.Location = new System.Drawing.Point(178, 77);
             this.txtEscalaY.Name = "txtEscalaY";
             this.txtEscalaY.Size = new System.Drawing.Size(59, 20);
@@ -786,7 +806,7 @@
             this.fPSToolStripMenuItem.Checked = true;
             this.fPSToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.fPSToolStripMenuItem.Name = "fPSToolStripMenuItem";
-            this.fPSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fPSToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.fPSToolStripMenuItem.Text = "FPS";
             this.fPSToolStripMenuItem.Click += new System.EventHandler(this.FPSToolStripMenuItem_Click);
             // 
@@ -799,6 +819,59 @@
             this.desligarZoomToolStripMenuItem.Text = "Desligar Zoom";
             this.desligarZoomToolStripMenuItem.Click += new System.EventHandler(this.DesligarZoomToolStripMenuItem_Click);
             // 
+            // btnDeformado
+            // 
+            this.btnDeformado.Location = new System.Drawing.Point(6, 6);
+            this.btnDeformado.Name = "btnDeformado";
+            this.btnDeformado.Size = new System.Drawing.Size(75, 23);
+            this.btnDeformado.TabIndex = 3;
+            this.btnDeformado.Text = "Deformado";
+            this.btnDeformado.UseVisualStyleBackColor = true;
+            this.btnDeformado.Click += new System.EventHandler(this.BtnDeformado_Click);
+            // 
+            // tabLuzes
+            // 
+            this.tabLuzes.Controls.Add(this.btnLuzPonto);
+            this.tabLuzes.Controls.Add(this.btnLuzDirecional);
+            this.tabLuzes.Controls.Add(this.btnLuzDestaque);
+            this.tabLuzes.Location = new System.Drawing.Point(4, 22);
+            this.tabLuzes.Name = "tabLuzes";
+            this.tabLuzes.Padding = new System.Windows.Forms.Padding(3);
+            this.tabLuzes.Size = new System.Drawing.Size(236, 124);
+            this.tabLuzes.TabIndex = 4;
+            this.tabLuzes.Text = "Luzes";
+            this.tabLuzes.UseVisualStyleBackColor = true;
+            // 
+            // btnLuzDestaque
+            // 
+            this.btnLuzDestaque.Location = new System.Drawing.Point(6, 29);
+            this.btnLuzDestaque.Name = "btnLuzDestaque";
+            this.btnLuzDestaque.Size = new System.Drawing.Size(75, 23);
+            this.btnLuzDestaque.TabIndex = 4;
+            this.btnLuzDestaque.Text = "Destaque";
+            this.btnLuzDestaque.UseVisualStyleBackColor = true;
+            this.btnLuzDestaque.Click += new System.EventHandler(this.BtnLuzDestaque_Click);
+            // 
+            // btnLuzDirecional
+            // 
+            this.btnLuzDirecional.Location = new System.Drawing.Point(6, 6);
+            this.btnLuzDirecional.Name = "btnLuzDirecional";
+            this.btnLuzDirecional.Size = new System.Drawing.Size(75, 23);
+            this.btnLuzDirecional.TabIndex = 5;
+            this.btnLuzDirecional.Text = "Direcional";
+            this.btnLuzDirecional.UseVisualStyleBackColor = true;
+            this.btnLuzDirecional.Click += new System.EventHandler(this.BtnLuzDirecional_Click);
+            // 
+            // btnLuzPonto
+            // 
+            this.btnLuzPonto.Location = new System.Drawing.Point(6, 53);
+            this.btnLuzPonto.Name = "btnLuzPonto";
+            this.btnLuzPonto.Size = new System.Drawing.Size(75, 23);
+            this.btnLuzPonto.TabIndex = 6;
+            this.btnLuzPonto.Text = "Ponto";
+            this.btnLuzPonto.UseVisualStyleBackColor = true;
+            this.btnLuzPonto.Click += new System.EventHandler(this.BtnLuzPonto_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -810,11 +883,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Activated += new System.EventHandler(this.Form1_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.ResizeBegin += new System.EventHandler(this.Form1_ResizeBegin);
-            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).EndInit();
@@ -823,6 +893,7 @@
             this.groupBox5.ResumeLayout(false);
             this.tabModelagem.ResumeLayout(false);
             this.tabPrimitivos.ResumeLayout(false);
+            this.tabAvancado.ResumeLayout(false);
             this.tabControles.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
@@ -847,6 +918,7 @@
             this.pnScreen.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabLuzes.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -920,6 +992,11 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage tabAvancado;
         private System.Windows.Forms.ToolStripMenuItem desligarZoomToolStripMenuItem;
+        private System.Windows.Forms.Button btnDeformado;
+        private System.Windows.Forms.TabPage tabLuzes;
+        private System.Windows.Forms.Button btnLuzPonto;
+        private System.Windows.Forms.Button btnLuzDirecional;
+        private System.Windows.Forms.Button btnLuzDestaque;
     }
 }
 

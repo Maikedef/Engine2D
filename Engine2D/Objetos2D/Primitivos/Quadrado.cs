@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Objetos2D.Primitivos
 {
-    public sealed class Quadrado : Primitivo2D
+    public class Quadrado : Primitivo2D
     {
         public Quadrado()
         {

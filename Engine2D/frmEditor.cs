@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Engine;
+using Engine.Luzes;
 using Engine.Objetos2D.Avancados;
 using Engine.Objetos2D.Primitivos;
 using Engine.Sistema;
@@ -20,7 +21,6 @@ namespace Roda
     public partial class Form1 : Form
     {
         bool _sair = false;
-        bool _resize = false;
         readonly int raio_padrao = 50;
 
         Engine2D engine2D = new Engine2D();
@@ -473,7 +473,7 @@ namespace Roda
             quadrilatero.Mat_render.CorBorda = new RGBA(255, (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
             quadrilatero.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
 
-            quadrilatero.GerarGeometria(0, raio_padrao, (int)(raio_padrao * 1.5F));
+            quadrilatero.GerarGeometria(rnd.Next(0, 359), raio_padrao, (int)(raio_padrao * 1.5F));
             engine2D.AddObjeto(obj_selecionado = quadrilatero);
             AtualizarControles(obj_selecionado);
         }
@@ -504,27 +504,42 @@ namespace Roda
             engine2D.Camera.DesligarSistemaZoom = desligarZoomToolStripMenuItem.Checked;
         }
 
-        private void Form1_Activated(object sender, EventArgs e)
+        private void BtnDeformado_Click(object sender, EventArgs e)
         {
-            
+            Deformado obj = new Deformado();
+            obj.Pos = PosAleatorio();
+            var rnd = new Random(Environment.TickCount);
+            obj.Mat_render.CorBorda = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+            obj.Mat_render.CorSolida = new RGBA((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+
+            obj.GerarGeometria(0, 5, 50);
+            engine2D.AddObjeto(obj);
+
+            AtualizarComboObjetos2D();
+            cboObjeto2D.SelectedValue = obj;
         }
 
-        private void Form1_ResizeBegin(object sender, EventArgs e)
+        private void BtnLuzPonto_Click(object sender, EventArgs e)
         {
-            _resize = true;
+            LuzPonto obj = new LuzPonto(150, 150);
+            obj.Pos = PosAleatorio();
+            var rnd = new Random(Environment.TickCount);
+            engine2D.AddObjeto(obj);
 
-            
+            AtualizarComboObjetos2D();
+            cboObjeto2D.SelectedValue = obj;
         }
 
-        private void Form1_ResizeEnd(object sender, EventArgs e)
+        private void BtnLuzDirecional_Click(object sender, EventArgs e)
         {
-            _resize = false;
+            // TODO: Luz Ambiente
+            throw new NotImplementedException();
         }
 
-        private void PicScreen_Resize(object sender, EventArgs e)
+        private void BtnLuzDestaque_Click(object sender, EventArgs e)
         {
-
-            
+            // TODO: Luz Lanterna
+            throw new NotImplementedException();
         }
     }
 }
