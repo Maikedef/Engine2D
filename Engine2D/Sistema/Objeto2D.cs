@@ -245,17 +245,16 @@ namespace Engine.Sistema
         /// <param name="raio"></param>
         public virtual void DefinirRaio(float raio)
         {
-            // Define os raios internos de cada vértice proporcionalmente ao novo raio de ponto máximo da circunferência
             int idx = IndicePorMaiorRaio();
 
             float raioMax = Vertices[idx].raio;
             float diff = raio - raioMax;
             if (diff == 0) return;
 
+            // Define os raios internos de cada vértice proporcionalmente ao novo raio de ponto máximo da circunferência
             float percentual = diff / raioMax * 100; // Percentual da diferença
             for (int i = 0; i < Vertices.Length; i++)
             {
-                if (i == idx) continue; // Pula o índice de referência
                 Vertices[i].raio += Vertices[i].raio * percentual / 100;
             }
             Raio = raio;
@@ -264,8 +263,6 @@ namespace Engine.Sistema
 
         private int IndicePorMaiorRaio()
         {
-            // TODO: Há uma falha quando diminui o raio
-
             int idxMax = 0;
             float v = float.MinValue;
 
